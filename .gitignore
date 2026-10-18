@@ -1,0 +1,10 @@
+# Benchmark is cloned, not vendored
+data/
+# Secrets
+.env
+# LLM response cache (reproducibility, but large)
+.cache/
+# Python
+__pycache__/
+.venv/
+.pytest_cache/

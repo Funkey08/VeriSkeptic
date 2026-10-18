@@ -1,0 +1,18 @@
+[project]
+name = "verilog-llm-agent"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=1.15.0",
+    "matplotlib>=3.11.2",
+    "python-dotenv>=1.2.4",
+    "tqdm>=4.70.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
