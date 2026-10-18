@@ -4,6 +4,7 @@ version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
     "anthropic>=1.15.0",
+    "google-genai>=2.31.0",
     "matplotlib>=3.11.2",
     "python-dotenv>=1.2.4",
     "tqdm>=4.70.1",

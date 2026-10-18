@@ -51,21 +51,23 @@ fixed by iteration. Full agent transcripts are in `results/<run>/transcripts/`.
 
 ```bash
 make setup                # icarus-verilog, VerilogEval v2 clone, Python deps (uv)
-cp .env.example .env      # add your ANTHROPIC_API_KEY
+cp .env.example .env      # add your GEMINI_API_KEY
 make test                 # harness: all 152 reference solutions must pass
 make smoke                # 20 problems x 4 modes on a cheap model
-make eval                 # full run on claude-sonnet-5-5, then analysis
+make eval                 # full run on gemini-4-argon, then analysis
 ```
 
 LLM responses are cached in `.cache/llm/`, so re-running replays them at no cost. Individual runs:
-`uv run run_eval.py --mode self --model claude-sonnet-5-5 --limit 20`. Runs resume if interrupted.
+`uv run run_eval.py --mode self --model gemini-4-argon --limit 20`. Runs resume if interrupted.
+Any `gemini-*` or `claude-*` model works (`MODEL=claude-sonnet-5-5 make eval`), so you can compare providers
+on the same harness. `--effort low|medium|high` maps to Gemini's thinking level or Claude's effort.
 
 ## Layout
 
 ```
 vagent/dataset.py   problem loading + 4 excluded problems (see below)
 vagent/harness.py   iverilog compile/sim: hidden eval vs. agent-visible checks
-vagent/llm.py       Claude client, disk cache, cost accounting
+vagent/llm.py       Gemini + Claude backends behind one interface, disk cache, cost accounting
 vagent/agent.py     the four modes and the shared tool-using loop
 run_eval.py         parallel, resumable experiment runner
 analyze.py          tables + chart
@@ -81,7 +83,9 @@ tests/              harness validation and fake-LLM agent tests
 - **Contamination:** VerilogEval problems come from HDLBits, which is public, so models may have seen
   them. Absolute pass rates are likely inflated. Differences between modes are the more meaningful result.
 - **Category labels** (combinational / sequential / FSM) come from a simple heuristic on the reference code.
-- **Nondeterminism:** current Claude models don't accept a temperature setting. Runs are reproducible
-  through the response cache, and variance is reported through pass@k over samples.
+- **Nondeterminism:** sampling isn't seeded. Runs are reproducible through the response cache, and
+  variance is reported through pass@k over samples.
+- **Cost figures** use list prices from October 2026, including Google's promotional Gemini rates
+  (`gemini-4-argon` doubles on 2026-12-01). See `PRICES` in `vagent/llm.py`.
 - **Sandboxing:** generated Verilog runs under Icarus in throwaway temp directories with timeouts. It is
   not a security sandbox.

@@ -1,5 +1,5 @@
-MODEL ?= claude-sonnet-5-5
-SMOKE_MODEL ?= claude-haiku-5-5
+MODEL ?= gemini-4-argon
+SMOKE_MODEL ?= gemini-3.5-flash-lite
 EFFORT ?= medium
 
 .PHONY: setup test smoke eval analyze

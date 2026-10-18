@@ -2,7 +2,7 @@
 
 Examples:
   uv run run_eval.py --mode baseline --samples 5
-  uv run run_eval.py --mode self --model claude-haiku-5-5 --limit 20   # cheap smoke test
+  uv run run_eval.py --mode self --model gemini-3.5-flash-lite --limit 20   # cheap smoke test
 """
 
 from __future__ import annotations
@@ -17,18 +17,18 @@ from tqdm import tqdm
 
 from vagent.agent import MODES, run
 from vagent.dataset import ROOT, load_problems
-from vagent.llm import LLM, Usage
+from vagent.llm import Usage, make_llm
 
 RESULTS_DIR = ROOT / "results"
 
 
 def _strip_signatures(messages: list[dict]) -> list[dict]:
-    """Thinking signatures are opaque and large; drop them from saved transcripts."""
+    """Thinking signatures / raw provider parts are opaque and large; drop them from saved transcripts."""
     out = []
     for m in messages:
         content = m["content"]
         if isinstance(content, list):
-            content = [{k: v for k, v in b.items() if k != "signature"} for b in content]
+            content = [{k: v for k, v in b.items() if k != "signature"} for b in content if b["type"] != "provider_raw"]
         out.append({**m, "content": content})
     return out
 
@@ -36,7 +36,7 @@ def _strip_signatures(messages: list[dict]) -> list[dict]:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--mode", choices=MODES, required=True)
-    ap.add_argument("--model", default="claude-sonnet-5-5")
+    ap.add_argument("--model", default="gemini-4-argon", help="gemini-* or claude-*")
     ap.add_argument("--effort", default="medium", choices=["low", "medium", "high", "xhigh", "max"])
     ap.add_argument("--samples", type=int, default=1, help="independent samples per problem (for pass@k)")
     ap.add_argument("--max-attempts", type=int, default=5, help="design writes allowed per agent run")
@@ -62,7 +62,7 @@ def main() -> None:
     jobs = [(p, s) for p in problems for s in range(args.samples) if (p.id, s) not in done]
     print(f"{run_name}: {len(problems)} problems x {args.samples} samples, {len(done)} already done, {len(jobs)} to run")
 
-    llm = LLM(args.model, effort=args.effort)
+    llm = make_llm(args.model, effort=args.effort)
     lock = threading.Lock()
     total = Usage()
     passed = 0
