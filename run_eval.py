@@ -41,6 +41,7 @@ def main() -> None:
     ap.add_argument("--samples", type=int, default=1, help="independent samples per problem (for pass@k)")
     ap.add_argument("--max-attempts", type=int, default=5, help="design writes allowed per agent run")
     ap.add_argument("--limit", type=int, help="only the first N problems")
+    ap.add_argument("--spread", action="store_true", help="with --limit, take N evenly spaced problems instead")
     ap.add_argument("--problems", nargs="*", help="problem ids or ProbNNN prefixes")
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--run-name", help="defaults to <model>_<mode>_<effort>")
@@ -58,7 +59,11 @@ def main() -> None:
             r = json.loads(line)
             done.add((r["problem"], r["sample"]))
 
-    problems = load_problems(limit=args.limit, ids=args.problems)
+    problems = load_problems(ids=args.problems)
+    if args.limit:
+        # The first problems are all trivial gates; --spread samples the whole difficulty range.
+        problems = problems[:: max(1, len(problems) // args.limit)] if args.spread else problems
+        problems = problems[: args.limit]
     jobs = [(p, s) for p in problems for s in range(args.samples) if (p.id, s) not in done]
     print(f"{run_name}: {len(problems)} problems x {args.samples} samples, {len(done)} already done, {len(jobs)} to run")
 

@@ -14,10 +14,10 @@ setup:
 test:
 	uv run pytest -q
 
-# ~20 problems on a cheap model: checks the pipeline end to end for cents.
+# 20 problems spread across the benchmark on a cheap model: checks the pipeline end to end for cents.
 smoke:
 	for m in baseline compile self oracle; do \
-	  uv run run_eval.py --mode $$m --model $(SMOKE_MODEL) --effort $(EFFORT) --limit 20 --run-name smoke_$$m || exit 1; \
+	  uv run run_eval.py --mode $$m --model $(SMOKE_MODEL) --effort $(EFFORT) --limit 20 --spread --run-name smoke_$$m || exit 1; \
 	done
 
 # Full benchmark: all four conditions on one model (baseline with 5 samples for pass@5).
