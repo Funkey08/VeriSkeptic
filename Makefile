@@ -1,6 +1,8 @@
 MODEL ?= gemini-4-argon
 SMOKE_MODEL ?= gemini-3.5-flash-lite
 EFFORT ?= medium
+# Agent runs are noisy; 3 samples tightens the confidence intervals (3x cost).
+AGENT_SAMPLES ?= 1
 
 .PHONY: setup test smoke eval analyze
 
@@ -21,9 +23,9 @@ smoke:
 # Full benchmark: all four conditions on one model (baseline with 5 samples for pass@5).
 eval:
 	uv run run_eval.py --mode baseline --model $(MODEL) --effort $(EFFORT) --samples 5
-	uv run run_eval.py --mode compile  --model $(MODEL) --effort $(EFFORT)
-	uv run run_eval.py --mode self     --model $(MODEL) --effort $(EFFORT)
-	uv run run_eval.py --mode oracle   --model $(MODEL) --effort $(EFFORT)
+	uv run run_eval.py --mode compile  --model $(MODEL) --effort $(EFFORT) --samples $(AGENT_SAMPLES)
+	uv run run_eval.py --mode self     --model $(MODEL) --effort $(EFFORT) --samples $(AGENT_SAMPLES)
+	uv run run_eval.py --mode oracle   --model $(MODEL) --effort $(EFFORT) --samples $(AGENT_SAMPLES)
 	uv run analyze.py --model $(MODEL)
 
 analyze:

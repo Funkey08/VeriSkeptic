@@ -36,6 +36,8 @@ output reaches the model in mode C.
 ### Fairness controls
 - **Equal compute:** the baseline is reported at pass@5 next to the agents' 5-attempt budget. pass@k
   assumes something can pick the right sample, so it overstates what a deployable system gets.
+- **Uncertainty is reported:** pass@1 comes with a 95% bootstrap CI over problems, and each agent mode
+  is compared to the baseline *paired by problem*. Use `AGENT_SAMPLES=3 make eval` for tighter intervals.
 - **Cost is reported:** LLM calls, tokens and dollars per problem for each mode.
 - **False confidence:** in mode C we track how often the agent's own testbench passed on the
   submitted design while the hidden one failed. That measures how often the agent signs off on a design

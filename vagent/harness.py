@@ -30,6 +30,8 @@ SIM_TIMEOUT_S = 30
 
 _MISMATCH_RE = re.compile(r"^Mismatches: (\d+) in (\d+) samples$")
 _DUMP_RE = re.compile(r"^\s*\$dump(file|vars)\b.*$", re.MULTILINE)
+# Warnings that sv-iv-analyze scores as failures (category 'n') even with 0 mismatches.
+_NO_SENSITIVITY = ("always_comb process has no sensitivities", "found no sensitivities so it will never trigger")
 
 
 @dataclass
@@ -61,8 +63,8 @@ def hidden_eval(problem: Problem, design_src: str) -> SimResult:
     """Score a design against the benchmark's reference testbench.
 
     Pass/fail mirrors scripts/sv-iv-analyze in VerilogEval: any line containing
-    "error" or a TIMEOUT is a failure; otherwise a "Mismatches: 0 in N samples"
-    line is required.
+    "error", a TIMEOUT or a no-sensitivity warning is a failure; otherwise a
+    "Mismatches: 0 in N samples" line is required.
     """
     with tempfile.TemporaryDirectory(prefix="vhidden_") as d:
         tmp = Path(d)
@@ -89,7 +91,7 @@ def hidden_eval(problem: Problem, design_src: str) -> SimResult:
         m = _MISMATCH_RE.match(line.strip())
         if m:
             mismatches, samples = int(m.group(1)), int(m.group(2))
-    if any("error" in line for line in log.splitlines()):
+    if any("error" in line or any(w in line for w in _NO_SENSITIVITY) for line in log.splitlines()):
         return SimResult(False, "compile_error", log, mismatches, samples)
     if mismatches is None:
         return SimResult(False, "no_result", log)

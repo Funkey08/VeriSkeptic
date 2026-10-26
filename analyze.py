@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 from collections import Counter, defaultdict
 from math import comb
 from pathlib import Path
@@ -17,7 +18,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-from vagent.dataset import ROOT  # noqa: E402
+from vagent.dataset import ROOT, load_problems  # noqa: E402
 
 RESULTS_DIR = ROOT / "results"
 MODE_ORDER = ["baseline", "compile", "self", "oracle"]
@@ -78,20 +79,55 @@ def pct(x: float | None) -> str:
     return "n/a" if x is None else f"{100 * x:.1f}%"
 
 
+def problem_rates(recs: list[dict]) -> dict[str, float]:
+    return {p: sum(r["passed"] for r in v) / len(v) for p, v in by_problem(recs).items()}
+
+
+def bootstrap_ci(values: list[float], n: int = 5000, seed: int = 0) -> tuple[float, float]:
+    """95% percentile bootstrap CI of the mean, resampling problems."""
+    rng = random.Random(seed)
+    means = sorted(sum(rng.choices(values, k=len(values))) / len(values) for _ in range(n))
+    return means[int(0.025 * n)], means[int(0.975 * n) - 1]
+
+
+def ci(values: list[float]) -> str:
+    lo, hi = bootstrap_ci(values)
+    return f"{100 * lo:.1f}–{100 * hi:.1f}"
+
+
 def summarize(runs: list[dict]) -> str:
+    n_full = len(load_problems())
     out = ["# Results", ""]
-    out += ["| Run | Mode | Problems | Samples | pass@1 | pass@5 | Avg LLM calls | Avg design versions | $ / problem | Total $ |",
-            "|---|---|---|---|---|---|---|---|---|---|"]
+    out += ["| Run | Mode | Problems | Samples | pass@1 | 95% CI | pass@5 | Avg LLM calls | Avg design versions | $ / problem | Total $ |",
+            "|---|---|---|---|---|---|---|---|---|---|---|"]
     for run in runs:
         recs = run["recs"]
         n_prob = len(by_problem(recs))
         calls = sum(r["usage"]["calls"] for r in recs) / len(recs)
         versions = sum(len(r["versions"]) for r in recs) / len(recs)
         cost = sum(r["usage"]["cost_usd"] for r in recs)
+        partial = "" if n_prob == n_full else f" ⚠ {n_full - n_prob} missing"
         out.append(
-            f"| {run['name']} | {MODE_LABEL[run['mode']]} | {n_prob} | {len(recs) // n_prob} | "
-            f"**{pct(pass_at(recs, 1))}** | {pct(pass_at(recs, 5))} | {calls:.1f} | {versions:.1f} | "
-            f"${cost / len(recs):.3f} | ${cost:.2f} |"
+            f"| {run['name']} | {MODE_LABEL[run['mode']]} | {n_prob}{partial} | {len(recs) // n_prob} | "
+            f"**{pct(pass_at(recs, 1))}** | {ci(list(problem_rates(recs).values()))} | {pct(pass_at(recs, 5))} | "
+            f"{calls:.1f} | {versions:.1f} | ${cost / len(recs):.3f} | ${cost:.2f} |"
+        )
+
+    # Paired by problem against the same model's baseline: removes problem-difficulty variance.
+    out += ["", "## Gain over single-call baseline (paired by problem)", "",
+            "| Run | Baseline | Problems compared | Δ pass@1 (pp) | 95% CI (pp) | Fixed / broken vs baseline |",
+            "|---|---|---|---|---|---|"]
+    for run in runs:
+        base = next((b for b in runs if b["mode"] == "baseline" and b["model"] == run["model"]), None)
+        if run["mode"] == "baseline" or base is None:
+            continue
+        a, b = problem_rates(run["recs"]), problem_rates(base["recs"])
+        common = sorted(a.keys() & b.keys())
+        diffs = [a[p] - b[p] for p in common]
+        lo, hi = bootstrap_ci(diffs)
+        out.append(
+            f"| {run['name']} | {base['name']} | {len(common)} | {100 * sum(diffs) / len(diffs):+.1f} | "
+            f"{100 * lo:+.1f} to {100 * hi:+.1f} | {sum(d > 0 for d in diffs)} / {sum(d < 0 for d in diffs)} |"
         )
 
     self_runs = [r for r in runs if r["mode"] == "self"]

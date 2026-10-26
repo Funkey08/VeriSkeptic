@@ -99,7 +99,10 @@ class LLM:
             data, cached = json.loads(path.read_text()), True
         else:
             data, cached = self._request(system, messages, tools or []), False
-            path.write_text(json.dumps(data))
+            # Write-then-rename so a crash mid-write can't leave a corrupt cache entry.
+            tmp = path.with_suffix(f".{threading.get_ident()}.tmp")
+            tmp.write_text(json.dumps(data))
+            tmp.replace(path)
 
         u = data["usage"]
         p_in, p_out, p_cache = PRICES.get(self.model, (0.0, 0.0, 0.0))
@@ -159,6 +162,8 @@ class GeminiLLM(LLM):
                     parts = [types.Part(text=b["text"]) if b["type"] == "text" else
                              types.Part(function_call=types.FunctionCall(name=b["name"], args=b["input"]))
                              for b in blocks if b["type"] in ("text", "tool_use")]
+                # An empty reply (e.g. all budget spent thinking) would be rejected on replay.
+                parts = parts or [types.Part(text="(no response)")]
                 contents.append(types.Content(role="model", parts=parts))
             elif isinstance(blocks, str):
                 contents.append(types.Content(role="user", parts=[types.Part(text=blocks)]))

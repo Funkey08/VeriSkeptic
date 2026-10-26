@@ -42,6 +42,12 @@ def test_syntax_error_detected():
     assert not ok and "error" in log.lower()
 
 
+def test_no_sensitivity_warning_fails_like_official_scorer():
+    p = next(p for p in PROBLEMS if p.id == "Prob003_step_one")
+    r = hidden_eval(p, "module TopModule(output logic one);\n  always_comb one = 1'b1;\nendmodule\n")
+    assert r.mismatches == 0 and not r.passed
+
+
 def test_self_sim_roundtrip():
     design = "module TopModule(input a, output y);\n  assign y = ~a;\nendmodule\n"
     tb = """module t;
