@@ -44,6 +44,7 @@ def main() -> None:
     ap.add_argument("--spread", action="store_true", help="with --limit, take N evenly spaced problems instead")
     ap.add_argument("--problems", nargs="*", help="problem ids or ProbNNN prefixes")
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--max-cost", type=float, help="stop starting new jobs once this session has spent $X")
     ap.add_argument("--run-name", help="defaults to <model>_<mode>_<effort>")
     args = ap.parse_args()
 
@@ -91,6 +92,8 @@ def main() -> None:
         futures = [pool.submit(work, p, s) for p, s in jobs]
         bar = tqdm(as_completed(futures), total=len(futures))
         for fut in bar:
+            if fut.cancelled():
+                continue
             try:
                 _, rec = fut.result()
             except Exception as e:  # keep the run going; failed jobs are retried on resume
@@ -103,6 +106,11 @@ def main() -> None:
                 for k, v in rec["usage"].items():
                     setattr(total, k, getattr(total, k) + v)
                 bar.set_postfix(passed=passed, cost=f"${total.cost_usd:.2f}")
+            if args.max_cost is not None and total.cost_usd >= args.max_cost:
+                # In-flight jobs still finish and are saved; the rest resume on the next run.
+                cancelled = sum(fu.cancel() for fu in futures)
+                tqdm.write(f"Budget ${args.max_cost:.2f} reached; cancelled {cancelled} queued jobs.")
+                args.max_cost = None
 
     print(f"Done. This session: {passed} passed, {total.calls} calls ({total.cached_calls} cached), "
           f"${total.cost_usd:.2f}. Results: {results_path.relative_to(ROOT)}")
