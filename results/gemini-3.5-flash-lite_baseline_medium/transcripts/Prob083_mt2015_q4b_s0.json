@@ -1,0 +1,20 @@
+{
+ "problem": "Prob083_mt2015_q4b",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x\n - input  y\n - output z\n\nThe module can be described by the following simulation waveform:\n\n  time  x  y  z\n  0ns   0  0  1\n  5ns   0  0  1\n  10ns  0  0  1\n  15ns  0  0  1\n  20ns  0  0  1\n  25ns  1  0  0\n  30ns  1  0  0\n  35ns  0  1  0\n  40ns  0  1  0\n  45ns  1  1  1\n  50ns  1  1  1\n  55ns  0  0  1\n  60ns  0  1  0\n  65ns  0  1  0\n  70ns  1  1  1\n  75ns  0  1  0\n  80ns  0  1  0\n  85ns  0  1  0\n  90ns  1  0  0",
+ "final_design": "module TopModule (\n    input  logic x,\n    input  logic y,\n    output logic z\n);\n\n    assign z = ~(x ^ y);\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x\n - input  y\n - output z\n\nThe module can be described by the following simulation waveform:\n\n  time  x  y  z\n  0ns   0  0  1\n  5ns   0  0  1\n  10ns  0  0  1\n  15ns  0  0  1\n  20ns  0  0  1\n  25ns  1  0  0\n  30ns  1  0  0\n  35ns  0  1  0\n  40ns  0  1  0\n  45ns  1  1  1\n  50ns  1  1  1\n  55ns  0  0  1\n  60ns  0  1  0\n  65ns  0  1  0\n  70ns  1  1  1\n  75ns  0  1  0\n  80ns  0  1  0\n  85ns  0  1  0\n  90ns  1  0  0\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic x,\n    input  logic y,\n    output logic z\n);\n\n    assign z = ~(x ^ y);\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

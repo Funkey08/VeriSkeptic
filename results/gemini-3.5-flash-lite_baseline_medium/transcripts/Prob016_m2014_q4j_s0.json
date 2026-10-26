@@ -1,0 +1,20 @@
+{
+ "problem": "Prob016_m2014_q4j",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x   (4 bits)\n - input  y   (4 bits)\n - output sum (5 bits)\n\nImplement a 4-bit adder with full adders. The output sum should include\nthe overflow bit.",
+ "final_design": "module full_adder (\n    input  logic a,\n    input  logic b,\n    input  logic cin,\n    output logic sum,\n    output logic cout\n);\n    assign sum  = a ^ b ^ cin;\n    assign cout = (a & b) | (cin & (a ^ b));\nendmodule\n\nmodule TopModule (\n    input  logic [3:0] x,\n    input  logic [3:0] y,\n    output logic [4:0] sum\n);\n    logic [4:0] c;\n    \n    assign c[0] = 1'b0;\n    \n    genvar i;\n    generate\n        for (i = 0; i < 4; i++) begin : gen_fa\n            full_adder fa (\n                .a(x[i]),\n                .b(y[i]),\n                .cin(c[i]),\n                .sum(sum[i]),\n                .cout(c[i+1])\n            );\n        end\n    endgenerate\n    \n    assign sum[4] = c[4];\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x   (4 bits)\n - input  y   (4 bits)\n - output sum (5 bits)\n\nImplement a 4-bit adder with full adders. The output sum should include\nthe overflow bit.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule full_adder (\n    input  logic a,\n    input  logic b,\n    input  logic cin,\n    output logic sum,\n    output logic cout\n);\n    assign sum  = a ^ b ^ cin;\n    assign cout = (a & b) | (cin & (a ^ b));\nendmodule\n\nmodule TopModule (\n    input  logic [3:0] x,\n    input  logic [3:0] y,\n    output logic [4:0] sum\n);\n    logic [4:0] c;\n    \n    assign c[0] = 1'b0;\n    \n    genvar i;\n    generate\n        for (i = 0; i < 4; i++) begin : gen_fa\n            full_adder fa (\n                .a(x[i]),\n                .b(y[i]),\n                .cin(c[i]),\n                .sum(sum[i]),\n                .cout(c[i+1])\n            );\n        end\n    endgenerate\n    \n    assign sum[4] = c[4];\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

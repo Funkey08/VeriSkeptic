@@ -1,0 +1,20 @@
+{
+ "problem": "Prob015_vector1",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in     (16 bits)\n - output out_hi ( 8 bits)\n - output out_lo ( 8 bits)\n\nThe module should implement a combinational circuit that splits an input\nhalf-word (16 bits, [15:0] ) into lower [7:0] and upper [15:8] bytes.",
+ "final_design": "module TopModule (\n    input  logic [15:0] in,\n    output logic [ 7:0] out_hi,\n    output logic [ 7:0] out_lo\n);\n\n    assign out_lo = in[7:0];\n    assign out_hi = in[15:8];\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in     (16 bits)\n - output out_hi ( 8 bits)\n - output out_lo ( 8 bits)\n\nThe module should implement a combinational circuit that splits an input\nhalf-word (16 bits, [15:0] ) into lower [7:0] and upper [15:8] bytes.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic [15:0] in,\n    output logic [ 7:0] out_hi,\n    output logic [ 7:0] out_lo\n);\n\n    assign out_lo = in[7:0];\n    assign out_hi = in[15:8];\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "problem": "Prob077_wire_decl",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  c\n - input  d\n - output out\n - output out_n\n\nThe module should implement the following circuit. Create two\nintermediate wires (named anything you want) to connect the AND and OR\ngates together. Note that the wire that feeds the NOT gate is really wire\n`out`, so you do not necessarily need to declare a third wire here.\nNotice how wires are driven by exactly one source (output of a gate), but\ncan feed multiple inputs.\n\nThe circuit is composed of two layers. The first layer, counting from the\ninput, is two AND gates: one whose input is connected to a and b, and the\nsecond is connected to c and d. The second layer there is an OR gate to\nOR the two AND outputs, connected the output 'out'. Additionally, there\nis an inverted output 'out_n'.",
+ "final_design": "module TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic c,\n    input  logic d,\n    output logic out,\n    output logic out_n\n);\n\n    logic w1, w2;\n\n    assign w1 = a & b;\n    assign w2 = c & d;\n    assign out = w1 | w2;\n    assign out_n = ~out;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  c\n - input  d\n - output out\n - output out_n\n\nThe module should implement the following circuit. Create two\nintermediate wires (named anything you want) to connect the AND and OR\ngates together. Note that the wire that feeds the NOT gate is really wire\n`out`, so you do not necessarily need to declare a third wire here.\nNotice how wires are driven by exactly one source (output of a gate), but\ncan feed multiple inputs.\n\nThe circuit is composed of two layers. The first layer, counting from the\ninput, is two AND gates: one whose input is connected to a and b, and the\nsecond is connected to c and d. The second layer there is an OR gate to\nOR the two AND outputs, connected the output 'out'. Additionally, there\nis an inverted output 'out_n'.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic c,\n    input  logic d,\n    output logic out,\n    output logic out_n\n);\n\n    logic w1, w2;\n\n    assign w1 = a & b;\n    assign w2 = c & d;\n    assign out = w1 | w2;\n    assign out_n = ~out;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "problem": "Prob024_hadd",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - output sum\n - output cout\n\nThe module should implement a half adder. A half adder adds two bits\n(with no carry-in) and produces a sum and carry-out.",
+ "final_design": "module TopModule (\n    input  logic a,\n    input  logic b,\n    output logic sum,\n    output logic cout\n);\n\n    assign sum  = a ^ b;\n    assign cout = a & b;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - output sum\n - output cout\n\nThe module should implement a half adder. A half adder adds two bits\n(with no carry-in) and produces a sum and carry-out.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    output logic sum,\n    output logic cout\n);\n\n    assign sum  = a ^ b;\n    assign cout = a & b;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

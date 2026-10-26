@@ -1,0 +1,20 @@
+{
+ "problem": "Prob066_edgecapture",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  in    (32 bits)\n - output out   (32 bits)\n\nThe module should examine each bit in the 32-bit input vector, and\ncapture when the input signal changes from 1 in one clock cycle to 0 the\nnext. \"Capture\" means that the output will remain 1 until the register is\nreset (active high synchronous reset). Assume all sequential logic is\ntriggered on the positive edge of the clock.",
+ "final_design": "module TopModule (\n    input  logic        clk,\n    input  logic        reset,\n    input  logic [31:0] in,\n    output logic [31:0] out\n);\n\n    logic [31:0] in_d;\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            out  <= 32'b0;\n            in_d <= 32'b0;\n        end else begin\n            in_d <= in;\n            for (int i = 0; i < 32; i++) begin\n                if (in_d[i] && ~in[i]) begin\n                    out[i] <= 1'b1;\n                end\n            end\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  in    (32 bits)\n - output out   (32 bits)\n\nThe module should examine each bit in the 32-bit input vector, and\ncapture when the input signal changes from 1 in one clock cycle to 0 the\nnext. \"Capture\" means that the output will remain 1 until the register is\nreset (active high synchronous reset). Assume all sequential logic is\ntriggered on the positive edge of the clock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic        clk,\n    input  logic        reset,\n    input  logic [31:0] in,\n    output logic [31:0] out\n);\n\n    logic [31:0] in_d;\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            out  <= 32'b0;\n            in_d <= 32'b0;\n        end else begin\n            in_d <= in;\n            for (int i = 0; i < 32; i++) begin\n                if (in_d[i] && ~in[i]) begin\n                    out[i] <= 1'b1;\n                end\n            end\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

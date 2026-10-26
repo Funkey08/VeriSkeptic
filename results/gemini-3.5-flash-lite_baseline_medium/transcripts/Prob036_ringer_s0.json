@@ -1,0 +1,20 @@
+{
+ "problem": "Prob036_ringer",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  ring\n - input  vibrate_mode\n - output ringer\n - output motor\n\nThe module should implement a circuit to control a cellphone's ringer and\nvibration motor. Whenever the phone needs to ring from an incoming call\n(input ring), your circuit must either turn on the ringer (output ringer\n= 1) or the motor (output motor = 1), but not both. If the phone is in\nvibrate mode (input vibrate_mode = 1), turn on the motor. Otherwise, turn\non the ringer.",
+ "final_design": "module TopModule (\n    input  ring,\n    input  vibrate_mode,\n    output ringer,\n    output motor\n);\n\n    assign ringer = ring & ~vibrate_mode;\n    assign motor  = ring &  vibrate_mode;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  ring\n - input  vibrate_mode\n - output ringer\n - output motor\n\nThe module should implement a circuit to control a cellphone's ringer and\nvibration motor. Whenever the phone needs to ring from an incoming call\n(input ring), your circuit must either turn on the ringer (output ringer\n= 1) or the motor (output motor = 1), but not both. If the phone is in\nvibrate mode (input vibrate_mode = 1), turn on the motor. Otherwise, turn\non the ringer.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  ring,\n    input  vibrate_mode,\n    output ringer,\n    output motor\n);\n\n    assign ringer = ring & ~vibrate_mode;\n    assign motor  = ring &  vibrate_mode;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

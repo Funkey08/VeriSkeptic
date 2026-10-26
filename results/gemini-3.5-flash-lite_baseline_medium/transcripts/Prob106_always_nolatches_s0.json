@@ -1,0 +1,20 @@
+{
+ "problem": "Prob106_always_nolatches",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  scancode (16 bits)\n - output left\n - output down\n - output right\n - output up\n\nThe module should process scancodes from a PS/2 keyboard for a game.\nGiven the last two bytes of scancodes received, you need to indicate\nwhether one of the arrow keys on the keyboard have been pressed. This\ninvolves a fairly simple mapping, which can be implemented as a case\nstatement (or if-elseif) with four cases.\n\n  Scancode[15:0] | Arrow key\n  16'he06b       | left arrow\n  16'he072       | down arrow\n  16'he074       | right arrow\n  16'he075       | up arrow\n  Anything else  | none\n\nYour circuit has one 16-bit input, and four outputs. Build this circuit\nthat recognizes these four scancodes and asserts the correct output.",
+ "final_design": "module TopModule (\n    input  logic [15:0] scancode,\n    output logic        left,\n    output logic        down,\n    output logic        right,\n    output logic        up\n);\n\n    always_comb begin\n        left  = 1'b0;\n        down  = 1'b0;\n        right = 1'b0;\n        up    = 1'b0;\n\n        case (scancode)\n            16'he06b: left  = 1'b1;\n            16'he072: down  = 1'b1;\n            16'he074: right = 1'b1;\n            16'he075: up    = 1'b1;\n            default: ;\n        endcase\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  scancode (16 bits)\n - output left\n - output down\n - output right\n - output up\n\nThe module should process scancodes from a PS/2 keyboard for a game.\nGiven the last two bytes of scancodes received, you need to indicate\nwhether one of the arrow keys on the keyboard have been pressed. This\ninvolves a fairly simple mapping, which can be implemented as a case\nstatement (or if-elseif) with four cases.\n\n  Scancode[15:0] | Arrow key\n  16'he06b       | left arrow\n  16'he072       | down arrow\n  16'he074       | right arrow\n  16'he075       | up arrow\n  Anything else  | none\n\nYour circuit has one 16-bit input, and four outputs. Build this circuit\nthat recognizes these four scancodes and asserts the correct output.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic [15:0] scancode,\n    output logic        left,\n    output logic        down,\n    output logic        right,\n    output logic        up\n);\n\n    always_comb begin\n        left  = 1'b0;\n        down  = 1'b0;\n        right = 1'b0;\n        up    = 1'b0;\n\n        case (scancode)\n            16'he06b: left  = 1'b1;\n            16'he072: down  = 1'b1;\n            16'he074: right = 1'b1;\n            16'he075: up    = 1'b1;\n            default: ;\n        endcase\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

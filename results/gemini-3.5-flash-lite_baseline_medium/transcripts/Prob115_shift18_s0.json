@@ -1,0 +1,20 @@
+{
+ "problem": "Prob115_shift18",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  load\n - input  ena\n - input  amount (2 bits)\n - input  data (64 bits)\n - output q (64 bits)\n\nThe module should implement a 64-bit arithmetic shift register, with\nsynchronous load. The shifter can shift both left and right, and by 1 or\n8 bit positions, selected by \"amount.\" Assume the right shit is an\narithmetic right shift.\n\nSignals are defined as below:\n\n  (1) load: Loads shift register with data[63:0] instead of shifting.\n       Active high.\n  (2) ena: Chooses whether to shift. Active high.\n  (3) amount: Chooses which direction and how much to shift.\n      (a) 2'b00: shift left by 1 bit.\n      (b) 2'b01: shift left by 8 bits.\n      (c) 2'b10: shift right by 1 bit.\n      (d) 2'b11: shift right by 8 bits.\n  (4) q: The contents of the shifter.",
+ "final_design": "module TopModule (\n    input  logic        clk,\n    input  logic        load,\n    input  logic        ena,\n    input  logic [1:0]  amount,\n    input  logic [63:0] data,\n    output logic [63:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (load) begin\n            q <= data;\n        end else if (ena) begin\n            case (amount)\n                2'b00:   q <= {q[62:0], 1'b0};\n                2'b01:   q <= {q[55:0], 8'b0};\n                2'b10:   q <= {{1{q[63]}}, q[63:1]};\n                2'b11:   q <= {{8{q[63]}}, q[63:8]};\n                default: q <= q;\n            endcase\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  load\n - input  ena\n - input  amount (2 bits)\n - input  data (64 bits)\n - output q (64 bits)\n\nThe module should implement a 64-bit arithmetic shift register, with\nsynchronous load. The shifter can shift both left and right, and by 1 or\n8 bit positions, selected by \"amount.\" Assume the right shit is an\narithmetic right shift.\n\nSignals are defined as below:\n\n  (1) load: Loads shift register with data[63:0] instead of shifting.\n       Active high.\n  (2) ena: Chooses whether to shift. Active high.\n  (3) amount: Chooses which direction and how much to shift.\n      (a) 2'b00: shift left by 1 bit.\n      (b) 2'b01: shift left by 8 bits.\n      (c) 2'b10: shift right by 1 bit.\n      (d) 2'b11: shift right by 8 bits.\n  (4) q: The contents of the shifter.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic        clk,\n    input  logic        load,\n    input  logic        ena,\n    input  logic [1:0]  amount,\n    input  logic [63:0] data,\n    output logic [63:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (load) begin\n            q <= data;\n        end else if (ena) begin\n            case (amount)\n                2'b00:   q <= {q[62:0], 1'b0};\n                2'b01:   q <= {q[55:0], 8'b0};\n                2'b10:   q <= {{1{q[63]}}, q[63:1]};\n                2'b11:   q <= {{8{q[63]}}, q[63:8]};\n                default: q <= q;\n            endcase\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

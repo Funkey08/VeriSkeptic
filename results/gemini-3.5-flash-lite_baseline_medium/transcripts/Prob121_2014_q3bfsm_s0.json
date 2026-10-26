@@ -1,0 +1,20 @@
+{
+ "problem": "Prob121_2014_q3bfsm",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  x\n - output z\n\nThe module should implement a finite-state machine with the\nstate-assigned table shown below. Reset should synchronous active high\nreset the FSM to state 000. Assume all sequential logic is triggered on\nthe positive edge of the clock.\n\n  Present state y[2:0] | Next state y[2:0] x=0, Next state y[2:0] x=1 | Output z\n  000 | 000, 001 | 0\n  001 | 001, 100 | 0\n  010 | 010, 001 | 0\n  011 | 001, 010 | 1\n  100 | 011, 100 | 1",
+ "final_design": "module TopModule (\n    input  logic clk,\n    input  logic reset,\n    input  logic x,\n    output logic z\n);\n\n    logic [2:0] state, next_state;\n\n    // State register with synchronous active-high reset\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            state <= 3'b000;\n        end else begin\n            state <= next_state;\n        end\n    end\n\n    // Next-state logic based on the transition table\n    always_comb begin\n        case (state)\n            3'b000: next_state = x ? 3'b001 : 3'b000;\n            3'b001: next_state = x ? 3'b100 : 3'b001;\n            3'b010: next_state = x ? 3'b001 : 3'b010;\n            3'b011: next_state = x ? 3'b010 : 3'b001;\n            3'b100: next_state = x ? 3'b100 : 3'b011;\n            default: next_state = 3'b000;\n        endcase\n    end\n\n    // Output logic (Moore FSM based on the state table)\n    always_comb begin\n        case (state)\n            3'b000:    z = 1'b0;\n            3'b001:    z = 1'b0;\n            3'b010:    z = 1'b0;\n            3'b011:    z = 1'b1;\n            3'b100:    z = 1'b1;\n            default:   z = 1'b0;\n        endcase\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  x\n - output z\n\nThe module should implement a finite-state machine with the\nstate-assigned table shown below. Reset should synchronous active high\nreset the FSM to state 000. Assume all sequential logic is triggered on\nthe positive edge of the clock.\n\n  Present state y[2:0] | Next state y[2:0] x=0, Next state y[2:0] x=1 | Output z\n  000 | 000, 001 | 0\n  001 | 001, 100 | 0\n  010 | 010, 001 | 0\n  011 | 001, 010 | 1\n  100 | 011, 100 | 1\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic clk,\n    input  logic reset,\n    input  logic x,\n    output logic z\n);\n\n    logic [2:0] state, next_state;\n\n    // State register with synchronous active-high reset\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            state <= 3'b000;\n        end else begin\n            state <= next_state;\n        end\n    end\n\n    // Next-state logic based on the transition table\n    always_comb begin\n        case (state)\n            3'b000: next_state = x ? 3'b001 : 3'b000;\n            3'b001: next_state = x ? 3'b100 : 3'b001;\n            3'b010: next_state = x ? 3'b001 : 3'b010;\n            3'b011: next_state = x ? 3'b010 : 3'b001;\n            3'b100: next_state = x ? 3'b100 : 3'b011;\n            default: next_state = 3'b000;\n        endcase\n    end\n\n    // Output logic (Moore FSM based on the state table)\n    always_comb begin\n        case (state)\n            3'b000:    z = 1'b0;\n            3'b001:    z = 1'b0;\n            3'b010:    z = 1'b0;\n            3'b011:    z = 1'b1;\n            3'b100:    z = 1'b1;\n            default:   z = 1'b0;\n        endcase\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

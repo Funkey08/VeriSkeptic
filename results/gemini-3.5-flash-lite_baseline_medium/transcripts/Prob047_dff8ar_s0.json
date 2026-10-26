@@ -1,0 +1,20 @@
+{
+ "problem": "Prob047_dff8ar",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  d      (8 bits)\n - output q      (8 bits)\n\nThe module should include 8 D flip-flops with active high asynchronous\nreset. The output should be reset to 0. All DFFs should be triggered by\nthe positive edge of clk.",
+ "final_design": "module TopModule (\n    input  logic       clk,\n    input  logic       areset,\n    input  logic [7:0] d,\n    output logic [7:0] q\n);\n\n    always_ff @(posedge clk or posedge areset) begin\n        if (areset) begin\n            q <= 8'h00;\n        end else begin\n            q <= d;\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  d      (8 bits)\n - output q      (8 bits)\n\nThe module should include 8 D flip-flops with active high asynchronous\nreset. The output should be reset to 0. All DFFs should be triggered by\nthe positive edge of clk.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic       clk,\n    input  logic       areset,\n    input  logic [7:0] d,\n    output logic [7:0] q\n);\n\n    always_ff @(posedge clk or posedge areset) begin\n        if (areset) begin\n            q <= 8'h00;\n        end else begin\n            q <= d;\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

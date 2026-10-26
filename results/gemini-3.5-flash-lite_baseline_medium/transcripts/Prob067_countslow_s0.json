@@ -1,0 +1,20 @@
+{
+ "problem": "Prob067_countslow",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  slowena\n - output q (4 bits)\n\nThe module should implement a decade counter that counts from 0 through\n9, inclusive, with a period of 10. The reset input is active high\nsynchronous, and should reset the counter to 0. We want to be able to\npause the counter rather than always incrementing every clock cycle, so\nthe \"slowena\" input if high indicates when the counter should increment.\nAssume all sequential logic is triggered on the positive edge of the\nclock.",
+ "final_design": "module TopModule (\n    input  logic       clk,\n    input  logic       reset,\n    input  logic       slowena,\n    output logic [3:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            q <= 4'd0;\n        end else if (slowena) begin\n            if (q == 4'd9) begin\n                q <= 4'd0;\n            end else begin\n                q <= q + 4'd1;\n            end\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  slowena\n - output q (4 bits)\n\nThe module should implement a decade counter that counts from 0 through\n9, inclusive, with a period of 10. The reset input is active high\nsynchronous, and should reset the counter to 0. We want to be able to\npause the counter rather than always incrementing every clock cycle, so\nthe \"slowena\" input if high indicates when the counter should increment.\nAssume all sequential logic is triggered on the positive edge of the\nclock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic       clk,\n    input  logic       reset,\n    input  logic       slowena,\n    output logic [3:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            q <= 4'd0;\n        end else if (slowena) begin\n            if (q == 4'd9) begin\n                q <= 4'd0;\n            end else begin\n                q <= q + 4'd1;\n            end\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

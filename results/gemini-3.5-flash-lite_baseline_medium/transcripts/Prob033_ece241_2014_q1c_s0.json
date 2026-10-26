@@ -1,0 +1,20 @@
+{
+ "problem": "Prob033_ece241_2014_q1c",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a (8 bits)\n - input  b (8 bits)\n - output s (8 bits)\n - output overflow\n\nAssume that you have two 8-bit 2's complement numbers, a[7:0] and b[7:0].\nThe module should add these numbers to produce s[7:0]. Also compute\nwhether a (signed) overflow has occurred.",
+ "final_design": "module TopModule (\n    input  logic [7:0] a,\n    input  logic [7:0] b,\n    output logic [7:0] s,\n    output logic       overflow\n);\n\n    assign s = a + b;\n    assign overflow = (a[7] == b[7]) && (s[7] != a[7]);\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a (8 bits)\n - input  b (8 bits)\n - output s (8 bits)\n - output overflow\n\nAssume that you have two 8-bit 2's complement numbers, a[7:0] and b[7:0].\nThe module should add these numbers to produce s[7:0]. Also compute\nwhether a (signed) overflow has occurred.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic [7:0] a,\n    input  logic [7:0] b,\n    output logic [7:0] s,\n    output logic       overflow\n);\n\n    assign s = a + b;\n    assign overflow = (a[7] == b[7]) && (s[7] != a[7]);\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

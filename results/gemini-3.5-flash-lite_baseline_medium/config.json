@@ -1,0 +1,13 @@
+{
+  "mode": "baseline",
+  "model": "gemini-3.5-flash-lite",
+  "effort": "medium",
+  "samples": 1,
+  "max_attempts": 5,
+  "limit": null,
+  "spread": false,
+  "problems": null,
+  "workers": 8,
+  "max_cost": 3.5,
+  "run_name": null
+}

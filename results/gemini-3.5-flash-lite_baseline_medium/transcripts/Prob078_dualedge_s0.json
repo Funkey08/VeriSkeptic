@@ -1,0 +1,20 @@
+{
+ "problem": "Prob078_dualedge",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  d\n - output q\n\nA dual-edge triggered flip-flop is triggered on both edges of the clock.\nHowever, FPGAs don't have dual-edge triggered flip-flops, and using an\nalways @(posedge clk or negedge clk) is not accepted as a legal\nsensitivity list. Build a circuit that functionally behaves like a\ndual-edge triggered flip-flop.",
+ "final_design": "module TopModule (\n    input  logic clk,\n    input  logic d,\n    output logic q\n);\n\n    logic q_posedge;\n    logic q_negedge;\n\n    always_ff @(posedge clk) begin\n        q_posedge <= d;\n    end\n\n    always_ff @(negedge clk) begin\n        q_negedge <= d;\n    end\n\n    assign q = clk ? q_posedge : q_negedge;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  d\n - output q\n\nA dual-edge triggered flip-flop is triggered on both edges of the clock.\nHowever, FPGAs don't have dual-edge triggered flip-flops, and using an\nalways @(posedge clk or negedge clk) is not accepted as a legal\nsensitivity list. Build a circuit that functionally behaves like a\ndual-edge triggered flip-flop.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic clk,\n    input  logic d,\n    output logic q\n);\n\n    logic q_posedge;\n    logic q_negedge;\n\n    always_ff @(posedge clk) begin\n        q_posedge <= d;\n    end\n\n    always_ff @(negedge clk) begin\n        q_negedge <= d;\n    end\n\n    assign q = clk ? q_posedge : q_negedge;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

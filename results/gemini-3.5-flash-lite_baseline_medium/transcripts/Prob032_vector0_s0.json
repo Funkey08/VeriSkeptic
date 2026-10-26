@@ -1,0 +1,20 @@
+{
+ "problem": "Prob032_vector0",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  vec  (3 bits)\n - output outv (3 bits)\n - output o2\n - output o1\n - output o0\n\nThe module has one 3-bit input, then outputs the same vector, and also\nsplits it into three separate 1-bit outputs. Connect output o0 to the\ninput vector's position 0, o1 to position 1, etc.",
+ "final_design": "module TopModule (\n    input  logic [2:0] vec,\n    output logic [2:0] outv,\n    output logic       o2,\n    output logic       o1,\n    output logic       o0\n);\n\n    assign outv = vec;\n    assign o0   = vec[0];\n    assign o1   = vec[1];\n    assign o2   = vec[2];\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  vec  (3 bits)\n - output outv (3 bits)\n - output o2\n - output o1\n - output o0\n\nThe module has one 3-bit input, then outputs the same vector, and also\nsplits it into three separate 1-bit outputs. Connect output o0 to the\ninput vector's position 0, o1 to position 1, etc.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic [2:0] vec,\n    output logic [2:0] outv,\n    output logic       o2,\n    output logic       o1,\n    output logic       o0\n);\n\n    assign outv = vec;\n    assign o0   = vec[0];\n    assign o1   = vec[1];\n    assign o2   = vec[2];\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

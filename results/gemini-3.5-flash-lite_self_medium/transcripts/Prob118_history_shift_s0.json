@@ -1,0 +1,89 @@
+{
+ "problem": "Prob118_history_shift",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  predict_valid\n - input  predict_taken\n - input  train_mispredicted\n - input  train_taken\n - input  train_history   (32 bits)\n - output predict_history (32 bits)\n\nThe module should implement a 32-bit global history shift register,\nincluding support for rolling back state in response to a pipeline flush\ncaused by a branch misprediction. When a branch prediction is made\n(predict_valid = 1), shift in predict_taken from the LSB side to update\nthe branch history for the predicted branch. (predict_history[0] is the\ndirection of the youngest branch.) When a branch misprediction occurs\n(train_mispredicted = 1), load the branch history register with the\nhistory after the completion of the mispredicted branch. This is the\nhistory before the mispredicted branch (train_history) concatenated with\nthe actual result of the branch (train_taken). If both a prediction and\nmisprediction occur at the same time, the misprediction takes precedence,\nbecause the pipeline flush will also flush out the branch that is\ncurrently making a prediction. predict_history is the value of the branch\nhistory register. areset is a positive edge triggered asynchronous reset\nthat resets the history counter to zero. Assume all sequential logic is\ntriggered on the positive edge of the clock.",
+ "final_design": "module TopModule (\n    input  logic        clk,\n    input  logic        areset,\n    input  logic        predict_valid,\n    input  logic        predict_taken,\n    input  logic        train_mispredicted,\n    input  logic        train_taken,\n    input  logic [31:0] train_history,\n    output logic [31:0] predict_history\n);\n\n  always_ff @(posedge clk or posedge areset) begin\n    if (areset) begin\n      predict_history <= 32'b0;\n    end else if (train_mispredicted) begin\n      predict_history <= {train_history[30:0], train_taken};\n    end else if (predict_valid) begin\n      predict_history <= {predict_history[30:0], predict_taken};\n    end\n  end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  areset\n - input  predict_valid\n - input  predict_taken\n - input  train_mispredicted\n - input  train_taken\n - input  train_history   (32 bits)\n - output predict_history (32 bits)\n\nThe module should implement a 32-bit global history shift register,\nincluding support for rolling back state in response to a pipeline flush\ncaused by a branch misprediction. When a branch prediction is made\n(predict_valid = 1), shift in predict_taken from the LSB side to update\nthe branch history for the predicted branch. (predict_history[0] is the\ndirection of the youngest branch.) When a branch misprediction occurs\n(train_mispredicted = 1), load the branch history register with the\nhistory after the completion of the mispredicted branch. This is the\nhistory before the mispredicted branch (train_history) concatenated with\nthe actual result of the branch (train_taken). If both a prediction and\nmisprediction occur at the same time, the misprediction takes precedence,\nbecause the pipeline flush will also flush out the branch that is\ncurrently making a prediction. predict_history is the value of the branch\nhistory register. areset is a positive edge triggered asynchronous reset\nthat resets the history counter to zero. Assume all sequential logic is\ntriggered on the positive edge of the clock.\n\nImplement TopModule using the tools. write_design compiles your design on its own and returns the compiler output. You can also write your own self-checking testbench (write_testbench) and run it (run_simulation). Hidden tests will grade the design; you cannot see them, so verify the behaviour yourself. Derive expected values independently from the specification (e.g. a behavioural model or hand-computed vectors), not by copying your design's logic, and cover reset, edge cases and multi-cycle sequences for clocked designs.\nYou may call write_design at most 5 times. When you are confident the design is correct, call submit."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "tool_use",
+     "id": "call_2530708",
+     "name": "write_design",
+     "input": {
+      "code": "module TopModule (\n    input  logic        clk,\n    input  logic        areset,\n    input  logic        predict_valid,\n    input  logic        predict_taken,\n    input  logic        train_mispredicted,\n    input  logic        train_taken,\n    input  logic [31:0] train_history,\n    output logic [31:0] predict_history\n);\n\n  always_ff @(posedge clk or posedge areset) begin\n    if (areset) begin\n      predict_history <= 32'b0;\n    end else if (train_mispredicted) begin\n      predict_history <= {train_history[30:0], train_taken};\n    end else if (predict_valid) begin\n      predict_history <= {predict_history[30:0], predict_taken};\n    end\n  end\n\nendmodule\n"
+     }
+    }
+   ]
+  },
+  {
+   "role": "user",
+   "content": [
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_2530708",
+     "content": "Design v1 saved; compiled cleanly. (4 design writes left.)"
+    }
+   ]
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "tool_use",
+     "id": "call_2741076",
+     "name": "write_testbench",
+     "input": {
+      "code": "module tb_TopModule;\n  logic        clk;\n  logic        areset;\n  logic        predict_valid;\n  logic        predict_taken;\n  logic        train_mispredicted;\n  logic        train_taken;\n  logic [31:0] train_history;\n  logic [31:0] predict_history;\n\n  TopModule dut (\n    .clk(clk),\n    .areset(areset),\n    .predict_valid(predict_valid),\n    .predict_taken(predict_taken),\n    .train_mispredicted(train_mispredicted),\n    .train_taken(train_taken),\n    .train_history(train_history),\n    .predict_history(predict_history)\n  );\n\n  always #5 clk = ~clk;\n\n  initial begin\n    clk = 0;\n    areset = 1;\n    predict_valid = 0;\n    predict_taken = 0;\n    train_mispredicted = 0;\n    train_taken = 0;\n    train_history = 32'h0;\n\n    #12;\n    if (predict_history !== 32'h0) begin\n      $display(\"SELFTEST FAIL: Reset failed, got %h\", predict_history);\n      $finish;\n    end\n    areset = 0;\n    #10;\n\n    // Test 1: Predict taken = 1\n    @(posedge clk);\n    predict_valid = 1;\n    predict_taken = 1;\n    @(posedge clk);\n    predict_valid = 0;\n    #1;\n    if (predict_history !== 32'h1) begin\n      $display(\"SELFTEST FAIL: Predict 1 failed, got %h\", predict_history);\n      $finish;\n    end\n\n    // Test 2: Predict taken = 0\n    @(posedge clk);\n    predict_valid = 1;\n    predict_taken = 0;\n    @(posedge clk);\n    predict_valid = 0;\n    #1;\n    if (predict_history !== 32'h2) begin // 32'h1 shifted left with 0 -> 32'h2\n      $display(\"SELFTEST FAIL: Predict 0 failed, got %h\", predict_history);\n      $finish;\n    end\n\n    // Test 3: Train mispredicted\n    @(posedge clk);\n    train_mispredicted = 1;\n    train_taken = 1;\n    train_history = 32'h12345678;\n    @(posedge clk);\n    train_mispredicted = 0;\n    #1;\n    // Expected: {train_history[30:0], train_taken} = {32'h12345678[30:0], 1'b1}\n    // 32'h12345678 = 0001 0010 0013... bit 31 is 0. \n    // 32'h12345678[30:0] = 2345678. With 1 at LSB: {2345678, 1} -> wait, let's calculate exact expected value.\n    // train_history = 32'h1234_5678;\n    // train_history[30:0] = 32'h1234_5678 & 32'h7FFF_FFFF = 32'h1234_5678.\n    // {32'h1234_5678, 1'b1} -> (32'h1234_5678 << 1) | 1 = 32'h2468_ACF1.\n    if (predict_history !== 32'h2468ACF1) begin\n      $display(\"SELFTEST FAIL: Misprediction load failed, got %h, expected %h\", predict_history, 32'h2468ACF1);\n      $finish;\n    end\n\n    // Test 4: Precedence (both predict_valid and train_mispredicted high)\n    @(posedge clk);\n    train_mispredicted = 1;\n    train_taken = 0;\n    train_history = 32'h0000_0001;\n    predict_valid = 1;\n    predict_taken = 1; // should be ignored due to misprediction precedence\n    @(posedge clk);\n    train_mispredicted = 0;\n    predict_valid = 0;\n    #1;\n    // Expected: {32'h0000_0001[30:0], 1'b0} = 32'h0000_0002\n    if (predict_history !== 32'h00000002) begin\n      $display(\"SELFTEST FAIL: Precedence failed, got %h, expected 32'h00000002\", predict_history);\n      $finish;\n    end\n\n    $display(\"SELFTEST PASS\");\n    $finish;\n  end\nendmodule\n"
+     }
+    }
+   ]
+  },
+  {
+   "role": "user",
+   "content": [
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_2741076",
+     "content": "Testbench v1 saved. Use run_simulation to run it."
+    }
+   ]
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "tool_use",
+     "id": "call_2122347",
+     "name": "run_simulation",
+     "input": {}
+    }
+   ]
+  },
+  {
+   "role": "user",
+   "content": [
+    {
+     "type": "tool_result",
+     "tool_use_id": "call_2122347",
+     "content": "[pass]\nSELFTEST PASS\ntb.sv:102: $finish called at 96 (1s)"
+    }
+   ]
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "tool_use",
+     "id": "call_1927233",
+     "name": "submit",
+     "input": {}
+    }
+   ]
+  }
+ ]
+}

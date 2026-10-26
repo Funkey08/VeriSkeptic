@@ -1,0 +1,20 @@
+{
+ "problem": "Prob049_m2014_q4b",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  ar\n - input  d\n - output q\n\nThe module should implement a D flip flop, positive edge triggered, with\nan asynchronous reset \"ar\".",
+ "final_design": "module TopModule (\n    input  logic clk,\n    input  logic ar,\n    input  logic d,\n    output logic q\n);\n\n    always_ff @(posedge clk or posedge ar) begin\n        if (ar) begin\n            q <= 1'b0;\n        end else begin\n            q <= d;\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  ar\n - input  d\n - output q\n\nThe module should implement a D flip flop, positive edge triggered, with\nan asynchronous reset \"ar\".\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic clk,\n    input  logic ar,\n    input  logic d,\n    output logic q\n);\n\n    always_ff @(posedge clk or posedge ar) begin\n        if (ar) begin\n            q <= 1'b0;\n        end else begin\n            q <= d;\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

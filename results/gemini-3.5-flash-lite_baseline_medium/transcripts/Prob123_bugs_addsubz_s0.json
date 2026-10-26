@@ -1,0 +1,20 @@
+{
+ "problem": "Prob123_bugs_addsubz",
+ "spec": "Consider the following adder-subtractor with a zero flag:\n\n  synthesis verilog_input_version verilog_2001\n  module TopModule (\n      input do_sub,\n      input [7:0] a,\n      input [7:0] b,\n      output reg [7:0] out,\n      output reg result_is_zero\n  );\n\n      always @(*) begin\n          case (do_sub)\n            0: out = a+b;\n            1: out = a-b;\n          endcase\n\n          if (~out)\n              result_is_zero = 1;\n      end\n\n  endmodule\n\nUnfortunately, this module has a bug. Implement a new version of this\nmodule that fixes the bug.",
+ "final_design": "module TopModule (\n    input do_sub,\n    input [7:0] a,\n    input [7:0] b,\n    output reg [7:0] out,\n    output reg result_is_zero\n);\n\n    always @(*) begin\n        case (do_sub)\n            1'b0: out = a + b;\n            1'b1: out = a - b;\n            default: out = 8'b0;\n        endcase\n\n        if (out == 8'b0)\n            result_is_zero = 1'b1;\n        else\n            result_is_zero = 1'b0;\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "Consider the following adder-subtractor with a zero flag:\n\n  synthesis verilog_input_version verilog_2001\n  module TopModule (\n      input do_sub,\n      input [7:0] a,\n      input [7:0] b,\n      output reg [7:0] out,\n      output reg result_is_zero\n  );\n\n      always @(*) begin\n          case (do_sub)\n            0: out = a+b;\n            1: out = a-b;\n          endcase\n\n          if (~out)\n              result_is_zero = 1;\n      end\n\n  endmodule\n\nUnfortunately, this module has a bug. Implement a new version of this\nmodule that fixes the bug.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input do_sub,\n    input [7:0] a,\n    input [7:0] b,\n    output reg [7:0] out,\n    output reg result_is_zero\n);\n\n    always @(*) begin\n        case (do_sub)\n            1'b0: out = a + b;\n            1'b1: out = a - b;\n            default: out = 8'b0;\n        endcase\n\n        if (out == 8'b0)\n            result_is_zero = 1'b1;\n        else\n            result_is_zero = 1'b0;\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

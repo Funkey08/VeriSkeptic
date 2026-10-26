@@ -1,0 +1,20 @@
+{
+ "problem": "Prob025_reduction",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in     (8 bits)\n - output parity\n\nParity checking is often used as a simple method of detecting errors when\ntransmitting data through an imperfect channel. The module should compute\na parity bit for an 8-bit byte (which will add a 9th bit to the byte). We\nwill use \"even\" parity, where the parity bit is just the XOR of all 8\ndata bits.",
+ "final_design": "module TopModule (\n    input  [7:0] in,\n    output       parity\n);\n\n    assign parity = ^in;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in     (8 bits)\n - output parity\n\nParity checking is often used as a simple method of detecting errors when\ntransmitting data through an imperfect channel. The module should compute\na parity bit for an 8-bit byte (which will add a 9th bit to the byte). We\nwill use \"even\" parity, where the parity bit is just the XOR of all 8\ndata bits.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  [7:0] in,\n    output       parity\n);\n\n    assign parity = ^in;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

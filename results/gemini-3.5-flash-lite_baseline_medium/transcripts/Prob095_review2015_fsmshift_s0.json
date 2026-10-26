@@ -1,0 +1,20 @@
+{
+ "problem": "Prob095_review2015_fsmshift",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - output shift_ena\n\nThis module is a part of the FSM for controlling a shift register, we\nwant the ability to enable the shift register for exactly 4 clock cycles\nwhenever the proper bit pattern is detected. Whenever the FSM is reset,\nassert shift_ena for 4 cycles, then 0 forever (until reset). Reset should\nbe active high synchronous.\n\nAssume all sequential logic is triggered on the positive edge of the\nclock.",
+ "final_design": "module TopModule (\n    input  logic clk,\n    input  logic reset,\n    output logic shift_ena\n);\n\n    logic [2:0] count;\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            count     <= 3'd4;\n            shift_ena <= 1'b1;\n        end else if (count > 3'd1) begin\n            count     <= count - 1'b1;\n            shift_ena <= 1'b1;\n        end else begin\n            shift_ena <= 1'b0;\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - output shift_ena\n\nThis module is a part of the FSM for controlling a shift register, we\nwant the ability to enable the shift register for exactly 4 clock cycles\nwhenever the proper bit pattern is detected. Whenever the FSM is reset,\nassert shift_ena for 4 cycles, then 0 forever (until reset). Reset should\nbe active high synchronous.\n\nAssume all sequential logic is triggered on the positive edge of the\nclock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic clk,\n    input  logic reset,\n    output logic shift_ena\n);\n\n    logic [2:0] count;\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            count     <= 3'd4;\n            shift_ena <= 1'b1;\n        end else if (count > 3'd1) begin\n            count     <= count - 1'b1;\n            shift_ena <= 1'b1;\n        end else begin\n            shift_ena <= 1'b0;\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

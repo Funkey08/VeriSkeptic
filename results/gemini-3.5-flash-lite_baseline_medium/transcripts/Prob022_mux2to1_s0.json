@@ -1,0 +1,20 @@
+{
+ "problem": "Prob022_mux2to1",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  sel\n - output out\n\nThe module should implement a one-bit wide, 2-to-1 multiplexer. When\nsel=0, choose a. When sel=1, choose b.",
+ "final_design": "module TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic sel,\n    output logic out\n);\n\n    assign out = sel ? b : a;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  sel\n - output out\n\nThe module should implement a one-bit wide, 2-to-1 multiplexer. When\nsel=0, choose a. When sel=1, choose b.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic sel,\n    output logic out\n);\n\n    assign out = sel ? b : a;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

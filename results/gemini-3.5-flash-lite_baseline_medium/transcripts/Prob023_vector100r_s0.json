@@ -1,0 +1,20 @@
+{
+ "problem": "Prob023_vector100r",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (100 bits)\n - output out (100 bits)\n\nThe module should reverse the bit ordering of the input and write to the\noutput.",
+ "final_design": "module TopModule (\n    input  logic [99:0] in,\n    output logic [99:0] out\n);\n\n    genvar i;\n    generate\n        for (i = 0; i < 100; i++) begin : gen_reverse_bits\n            assign out[i] = in[99 - i];\n        end\n    endgenerate\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (100 bits)\n - output out (100 bits)\n\nThe module should reverse the bit ordering of the input and write to the\noutput.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```systemverilog\nmodule TopModule (\n    input  logic [99:0] in,\n    output logic [99:0] out\n);\n\n    genvar i;\n    generate\n        for (i = 0; i < 100; i++) begin : gen_reverse_bits\n            assign out[i] = in[99 - i];\n        end\n    endgenerate\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

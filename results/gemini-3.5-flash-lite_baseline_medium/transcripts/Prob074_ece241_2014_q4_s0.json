@@ -1,0 +1,20 @@
+{
+ "problem": "Prob074_ece241_2014_q4",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  x\n - output z\n\nThe module should implement a finite state machine with the following\nbehavior. Input x goes to three different two-input gates: an XOR, an\nAND, and a OR gate. Each of the three gates is connected to the input of\na D flip-flop and then the flip-flop outputs all go to a three-input\nNOR gate, whose output is Z. The second input of the XOR is its corresponding\nflip-flop's output, the second input of the AND is its corresponding\nflip-flop's complemented output, and finally the second input of the OR\nis its corresponding flip-flop's complementary output.\n\nAssume that the D flip-flops are initially reset to zero before the\nmachine begins. Assume all sequential logic is triggered on the positive\nedge of the clock.",
+ "final_design": "module TopModule (\n    input  logic clk,\n    input  logic x,\n    output logic z\n);\n\n    logic q_xor, q_and, q_or;\n    logic d_xor, d_and, d_or;\n\n    // Gate definitions\n    assign d_xor = x ^ q_xor;\n    assign d_and = x & ~q_and;\n    assign d_or  = x | ~q_or;\n\n    // D flip-flops with initial zero state for simulation\n    initial begin\n        q_xor = 1'b0;\n        q_and = 1'b0;\n        q_or  = 1'b0;\n    end\n\n    always_ff @(posedge clk) begin\n        q_xor <= d_xor;\n        q_and <= d_and;\n        q_or  <= d_or;\n    end\n\n    // Three-input NOR gate for output z\n    assign z = ~(q_xor | q_and | q_or);\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  x\n - output z\n\nThe module should implement a finite state machine with the following\nbehavior. Input x goes to three different two-input gates: an XOR, an\nAND, and a OR gate. Each of the three gates is connected to the input of\na D flip-flop and then the flip-flop outputs all go to a three-input\nNOR gate, whose output is Z. The second input of the XOR is its corresponding\nflip-flop's output, the second input of the AND is its corresponding\nflip-flop's complemented output, and finally the second input of the OR\nis its corresponding flip-flop's complementary output.\n\nAssume that the D flip-flops are initially reset to zero before the\nmachine begins. Assume all sequential logic is triggered on the positive\nedge of the clock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic clk,\n    input  logic x,\n    output logic z\n);\n\n    logic q_xor, q_and, q_or;\n    logic d_xor, d_and, d_or;\n\n    // Gate definitions\n    assign d_xor = x ^ q_xor;\n    assign d_and = x & ~q_and;\n    assign d_or  = x | ~q_or;\n\n    // D flip-flops with initial zero state for simulation\n    initial begin\n        q_xor = 1'b0;\n        q_and = 1'b0;\n        q_or  = 1'b0;\n    end\n\n    always_ff @(posedge clk) begin\n        q_xor <= d_xor;\n        q_and <= d_and;\n        q_or  <= d_or;\n    end\n\n    // Three-input NOR gate for output z\n    assign z = ~(q_xor | q_and | q_or);\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "problem": "Prob132_always_if2",
+ "spec": "Consider the following adder-subtractor with a zero flag:\n\n  module TopModule (\n      input      cpu_overheated,\n      output reg shut_off_computer,\n      input      arrived,\n      input      gas_tank_empty,\n      output reg keep_driving\n  );\n\n      always @(*) begin\n          if (cpu_overheated)\n             shut_off_computer = 1;\n      end\n\n      always @(*) begin\n          if (~arrived)\n             keep_driving = ~gas_tank_empty;\n      end\n\n  endmodule\n\nUnfortunately, this module has a bug. Implement a new version of this\nmodule that fixes the bug.",
+ "final_design": "module TopModule (\n    input      cpu_overheated,\n    output reg shut_off_computer,\n    input      arrived,\n    input      gas_tank_empty,\n    output reg keep_driving\n);\n\n    always @(*) begin\n        shut_off_computer = cpu_overheated ? 1'b1 : 1'b0;\n    end\n\n    always @(*) begin\n        if (!arrived) begin\n            keep_driving = ~gas_tank_empty;\n        end else begin\n            keep_driving = 1'b0;\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "Consider the following adder-subtractor with a zero flag:\n\n  module TopModule (\n      input      cpu_overheated,\n      output reg shut_off_computer,\n      input      arrived,\n      input      gas_tank_empty,\n      output reg keep_driving\n  );\n\n      always @(*) begin\n          if (cpu_overheated)\n             shut_off_computer = 1;\n      end\n\n      always @(*) begin\n          if (~arrived)\n             keep_driving = ~gas_tank_empty;\n      end\n\n  endmodule\n\nUnfortunately, this module has a bug. Implement a new version of this\nmodule that fixes the bug.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input      cpu_overheated,\n    output reg shut_off_computer,\n    input      arrived,\n    input      gas_tank_empty,\n    output reg keep_driving\n);\n\n    always @(*) begin\n        shut_off_computer = cpu_overheated ? 1'b1 : 1'b0;\n    end\n\n    always @(*) begin\n        if (!arrived) begin\n            keep_driving = ~gas_tank_empty;\n        end else begin\n            keep_driving = 1'b0;\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

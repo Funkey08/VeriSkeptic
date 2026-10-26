@@ -1,0 +1,20 @@
+{
+ "problem": "Prob059_wire4",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  c\n - output w\n - output x\n - output y\n - output z\n\nThe module should behave like wires that makes these connections:\n\n  a -> w\n  b -> x\n  b -> y\n  c -> z",
+ "final_design": "module TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic c,\n    output logic w,\n    output logic x,\n    output logic y,\n    output logic z\n);\n\n    assign w = a;\n    assign x = b;\n    assign y = b;\n    assign z = c;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  c\n - output w\n - output x\n - output y\n - output z\n\nThe module should behave like wires that makes these connections:\n\n  a -> w\n  b -> x\n  b -> y\n  c -> z\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic c,\n    output logic w,\n    output logic x,\n    output logic y,\n    output logic z\n);\n\n    assign w = a;\n    assign x = b;\n    assign y = b;\n    assign z = c;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

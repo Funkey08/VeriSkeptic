@@ -1,0 +1,20 @@
+{
+ "problem": "Prob054_edgedetect",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  in    (8 bits)\n - output pedge (8 bits)\n\nThe module should examine each bit in an 8-bit vector and detect when the\ninput signal changes from 0 in one clock cycle to 1 the next (similar to\npositive edge detection). The output bit should be set the cycle after a\n0 to 1 transition occurs.",
+ "final_design": "module TopModule (\n    input  logic       clk,\n    input  logic [7:0] in,\n    output logic [7:0] pedge\n);\n\n    logic [7:0] in_d;\n\n    always_ff @(posedge clk) begin\n        in_d  <= in;\n        pedge <= in & ~in_d;\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  in    (8 bits)\n - output pedge (8 bits)\n\nThe module should examine each bit in an 8-bit vector and detect when the\ninput signal changes from 0 in one clock cycle to 1 the next (similar to\npositive edge detection). The output bit should be set the cycle after a\n0 to 1 transition occurs.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic       clk,\n    input  logic [7:0] in,\n    output logic [7:0] pedge\n);\n\n    logic [7:0] in_d;\n\n    always_ff @(posedge clk) begin\n        in_d  <= in;\n        pedge <= in & ~in_d;\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

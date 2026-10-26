@@ -1,0 +1,20 @@
+{
+ "problem": "Prob045_edgedetect2",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input clk\n - input in       (8 bits)\n - output anyedge (8 bits)\n\nImplement a module that for each bit in an 8-bit input vector, detect\nwhen the input signal changes from one clock cycle to the next (detect\nany edge). The output bit of anyedge should be set to 1 the cycle \nafter the input bit has 0 to 1 or 1 to 0 transition occurs. Assume all \nsequential logic is triggered on the positive edge of the clock.",
+ "final_design": "module TopModule (\n    input  logic       clk,\n    input  logic [7:0] in,\n    output logic [7:0] anyedge\n);\n\n    logic [7:0] in_prev;\n\n    always_ff @(posedge clk) begin\n        anyedge <= in ^ in_prev;\n        in_prev <= in;\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input clk\n - input in       (8 bits)\n - output anyedge (8 bits)\n\nImplement a module that for each bit in an 8-bit input vector, detect\nwhen the input signal changes from one clock cycle to the next (detect\nany edge). The output bit of anyedge should be set to 1 the cycle \nafter the input bit has 0 to 1 or 1 to 0 transition occurs. Assume all \nsequential logic is triggered on the positive edge of the clock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic       clk,\n    input  logic [7:0] in,\n    output logic [7:0] anyedge\n);\n\n    logic [7:0] in_prev;\n\n    always_ff @(posedge clk) begin\n        anyedge <= in ^ in_prev;\n        in_prev <= in;\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

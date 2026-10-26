@@ -1,0 +1,20 @@
+{
+ "problem": "Prob002_m2014_q4i",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output out\n\nThe module should always drive 0 (or logic low).",
+ "final_design": "module TopModule (\n    output out\n);\n\nassign out = 1'b0;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - output out\n\nThe module should always drive 0 (or logic low).\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    output out\n);\n\nassign out = 1'b0;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "problem": "Prob073_dff16e",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  resetn\n - input  byteena ( 2 bits)\n - input  d       (16 bits)\n - output q       (16 bits)\n\nThe module should include 16 D flip-flops. It's sometimes useful to only\nmodify parts of a group of flip-flops. The byte-enable inputs control\nwhether each byte of the 16 registers should be written to on that cycle.\nbyteena[1] controls the upper byte d[15:8], while byteena[0] controls the\nlower byte d[7:0]. resetn is a synchronous, active-low reset. All DFFs\nshould be triggered by the positive edge of clk.",
+ "final_design": "module TopModule (\n    input  logic        clk,\n    input  logic        resetn,\n    input  logic [1:0]  byteena,\n    input  logic [15:0] d,\n    output logic [15:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (!resetn) begin\n            q <= 16'b0;\n        end else begin\n            if (byteena[1]) begin\n                q[15:8] <= d[15:8];\n            end\n            if (byteena[0]) begin\n                q[7:0] <= d[7:0];\n            end\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  resetn\n - input  byteena ( 2 bits)\n - input  d       (16 bits)\n - output q       (16 bits)\n\nThe module should include 16 D flip-flops. It's sometimes useful to only\nmodify parts of a group of flip-flops. The byte-enable inputs control\nwhether each byte of the 16 registers should be written to on that cycle.\nbyteena[1] controls the upper byte d[15:8], while byteena[0] controls the\nlower byte d[7:0]. resetn is a synchronous, active-low reset. All DFFs\nshould be triggered by the positive edge of clk.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic        clk,\n    input  logic        resetn,\n    input  logic [1:0]  byteena,\n    input  logic [15:0] d,\n    output logic [15:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (!resetn) begin\n            q <= 16'b0;\n        end else begin\n            if (byteena[1]) begin\n                q[15:8] <= d[15:8];\n            end\n            if (byteena[0]) begin\n                q[7:0] <= d[7:0];\n            end\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "problem": "Prob020_mt2015_eq2",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  A (2 bits)\n - input  B (2 bits)\n - output z\n\nThe module should implement a circuit that has two 2-bit inputs A[1:0]\nand B[1:0], and produces an output z. The value of z should be 1 if A =\nB, otherwise z should be 0.",
+ "final_design": "module TopModule (\n    input  logic [1:0] A,\n    input  logic [1:0] B,\n    output logic       z\n);\n\n    assign z = (A == B);\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  A (2 bits)\n - input  B (2 bits)\n - output z\n\nThe module should implement a circuit that has two 2-bit inputs A[1:0]\nand B[1:0], and produces an output z. The value of z should be 1 if A =\nB, otherwise z should be 0.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic [1:0] A,\n    input  logic [1:0] B,\n    output logic       z\n);\n\n    assign z = (A == B);\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

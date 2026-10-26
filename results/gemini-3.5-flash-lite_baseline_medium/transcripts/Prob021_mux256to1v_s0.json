@@ -1,0 +1,20 @@
+{
+ "problem": "Prob021_mux256to1v",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (1024 bits)\n - input  sel (   8 bits)\n - output out (   4 bits)\n\nThe module should implement a 4-bit wide, 256-to-1 multiplexer. The 256\n4-bit inputs are all packed into a single 1024-bit input vector. sel=0\nshould select bits in[3:0], sel=1 selects bits in[7:4], sel=2 selects\nbits in[11:8], etc.",
+ "final_design": "module TopModule (\n    input  [1023:0] in,\n    input  [7:0]    sel,\n    output [3:0]    out\n);\n\n    assign out = in[sel * 4 +: 4];\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (1024 bits)\n - input  sel (   8 bits)\n - output out (   4 bits)\n\nThe module should implement a 4-bit wide, 256-to-1 multiplexer. The 256\n4-bit inputs are all packed into a single 1024-bit input vector. sel=0\nshould select bits in[3:0], sel=1 selects bits in[7:4], sel=2 selects\nbits in[11:8], etc.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  [1023:0] in,\n    input  [7:0]    sel,\n    output [3:0]    out\n);\n\n    assign out = in[sel * 4 +: 4];\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

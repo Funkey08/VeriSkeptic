@@ -1,0 +1,20 @@
+{
+ "problem": "Prob039_always_if",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  sel_b1\n - input  sel_b2\n - output out_assign\n - output out_always\n\nThe module should implement a 2-to-1 mux that chooses between a and b.\nChoose b if both sel_b1 and sel_b2 are true. Otherwise, choose a. Do the\nsame twice, once using assign statements and once using a procedural if\nstatement.",
+ "final_design": "module TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic sel_b1,\n    input  logic sel_b2,\n    output logic out_assign,\n    output logic out_always\n);\n\n    // 2-to-1 mux using a continuous assignment\n    assign out_assign = (sel_b1 && sel_b2) ? b : a;\n\n    // 2-to-1 mux using a procedural if statement\n    always_comb begin\n        if (sel_b1 && sel_b2) begin\n            out_always = b;\n        end else begin\n            out_always = a;\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  a\n - input  b\n - input  sel_b1\n - input  sel_b2\n - output out_assign\n - output out_always\n\nThe module should implement a 2-to-1 mux that chooses between a and b.\nChoose b if both sel_b1 and sel_b2 are true. Otherwise, choose a. Do the\nsame twice, once using assign statements and once using a procedural if\nstatement.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic a,\n    input  logic b,\n    input  logic sel_b1,\n    input  logic sel_b2,\n    output logic out_assign,\n    output logic out_always\n);\n\n    // 2-to-1 mux using a continuous assignment\n    assign out_assign = (sel_b1 && sel_b2) ? b : a;\n\n    // 2-to-1 mux using a procedural if statement\n    always_comb begin\n        if (sel_b1 && sel_b2) begin\n            out_always = b;\n        end else begin\n            out_always = a;\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

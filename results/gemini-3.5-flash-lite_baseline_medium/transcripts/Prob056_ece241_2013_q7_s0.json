@@ -1,0 +1,20 @@
+{
+ "problem": "Prob056_ece241_2013_q7",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  j\n - input  k\n - output Q\n\nThe module should implement a JK flip-flop with the following truth\ntable. Note: Qold is the output of the flip-flop before the positive\nclock edge.\n\n  J | K | Q\n  0 | 0 | Qold\n  0 | 1 | 0\n  1 | 0 | 1\n  1 | 1 | ~Qold",
+ "final_design": "module TopModule (\n    input  logic clk,\n    input  logic j,\n    input  logic k,\n    output logic Q\n);\n\n  always_ff @(posedge clk) begin\n    case ({j, k})\n      2'b00: Q <= Q;\n      2'b01: Q <= 1'b0;\n      2'b10: Q <= 1'b1;\n      2'b11: Q <= ~Q;\n    endcase\n  end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  j\n - input  k\n - output Q\n\nThe module should implement a JK flip-flop with the following truth\ntable. Note: Qold is the output of the flip-flop before the positive\nclock edge.\n\n  J | K | Q\n  0 | 0 | Qold\n  0 | 1 | 0\n  1 | 0 | 1\n  1 | 1 | ~Qold\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic clk,\n    input  logic j,\n    input  logic k,\n    output logic Q\n);\n\n  always_ff @(posedge clk) begin\n    case ({j, k})\n      2'b00: Q <= Q;\n      2'b01: Q <= 1'b0;\n      2'b10: Q <= 1'b1;\n      2'b11: Q <= ~Q;\n    endcase\n  end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

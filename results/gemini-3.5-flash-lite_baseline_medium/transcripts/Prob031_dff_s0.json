@@ -1,0 +1,20 @@
+{
+ "problem": "Prob031_dff",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input clk\n - input d\n - input q\n\nThe module should implement a single D flip-flop. Assume all sequential\nlogic is triggered on the positive edge of the clock.",
+ "final_design": "module TopModule (\n    input clk,\n    input d,\n    output reg q\n);\n\nalways @(posedge clk) begin\n    q <= d;\nend\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input clk\n - input d\n - input q\n\nThe module should implement a single D flip-flop. Assume all sequential\nlogic is triggered on the positive edge of the clock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input clk,\n    input d,\n    output reg q\n);\n\nalways @(posedge clk) begin\n    q <= d;\nend\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

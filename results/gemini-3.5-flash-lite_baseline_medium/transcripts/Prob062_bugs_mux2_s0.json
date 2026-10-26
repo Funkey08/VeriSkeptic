@@ -1,0 +1,20 @@
+{
+ "problem": "Prob062_bugs_mux2",
+ "spec": "Consider the following implementation of an 8-bit 2-to-1 mux:\n\n  module TopModule (\n      input        sel,\n      input  [7:0] a,\n      input  [7:0] b,\n      output       out\n  );\n\n      assign out = (~sel & a) | (sel & b);\n\n  endmodule\n\nUnfortunately, this module has a bug. Implement a new version of this\nmodule that fixes the bug.",
+ "final_design": "module TopModule (\n    input        sel,\n    input  [7:0] a,\n    input  [7:0] b,\n    output [7:0] out\n);\n\n    assign out = (~sel & a) | (sel & b);\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "Consider the following implementation of an 8-bit 2-to-1 mux:\n\n  module TopModule (\n      input        sel,\n      input  [7:0] a,\n      input  [7:0] b,\n      output       out\n  );\n\n      assign out = (~sel & a) | (sel & b);\n\n  endmodule\n\nUnfortunately, this module has a bug. Implement a new version of this\nmodule that fixes the bug.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input        sel,\n    input  [7:0] a,\n    input  [7:0] b,\n    output [7:0] out\n);\n\n    assign out = (~sel & a) | (sel & b);\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

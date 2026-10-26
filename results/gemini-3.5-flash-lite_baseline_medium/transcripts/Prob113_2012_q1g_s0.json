@@ -1,0 +1,20 @@
+{
+ "problem": "Prob113_2012_q1g",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x (4 bits)\n - output f\n\nThe module should implement the function f shown in the Karnaugh map\nbelow.\n\n             x[0]x[1]\nx[2]x[3]  00  01  11  10\n  00     | 1 | 0 | 0 | 1 |\n  01     | 0 | 0 | 0 | 0 |\n  11     | 1 | 1 | 1 | 0 |\n  10     | 1 | 1 | 0 | 1 |",
+ "final_design": "module TopModule (\n    input  logic [3:0] x,\n    output logic       f\n);\n\n    assign f = 16'b1101_0000_0111_0011[x];\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  x (4 bits)\n - output f\n\nThe module should implement the function f shown in the Karnaugh map\nbelow.\n\n             x[0]x[1]\nx[2]x[3]  00  01  11  10\n  00     | 1 | 0 | 0 | 1 |\n  01     | 0 | 0 | 0 | 0 |\n  11     | 1 | 1 | 1 | 0 |\n  10     | 1 | 1 | 0 | 1 |\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic [3:0] x,\n    output logic       f\n);\n\n    assign f = 16'b1101_0000_0111_0011[x];\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -4,7 +4,7 @@ EFFORT ?= medium
 # Agent runs are noisy; 3 samples tightens the confidence intervals (3x cost).
 AGENT_SAMPLES ?= 1
 
-.PHONY: setup test smoke eval analyze
+.PHONY: setup test smoke eval eval-budget analyze
 
 setup:
 	brew list icarus-verilog >/dev/null 2>&1 || brew install icarus-verilog
@@ -27,6 +27,14 @@ eval:
 	uv run run_eval.py --mode self     --model $(MODEL) --effort $(EFFORT) --samples $(AGENT_SAMPLES)
 	uv run run_eval.py --mode oracle   --model $(MODEL) --effort $(EFFORT) --samples $(AGENT_SAMPLES)
 	uv run analyze.py --model $(MODEL)
+
+# The published results: three modes, one sample, cheap model (~$3 of API calls).
+BUDGET_MODEL ?= gemini-3.5-flash-lite
+eval-budget:
+	for m in baseline self oracle; do \
+	  uv run run_eval.py --mode $$m --model $(BUDGET_MODEL) --effort $(EFFORT) || exit 1; \
+	done
+	uv run analyze.py --model $(BUDGET_MODEL)
 
 analyze:
 	uv run analyze.py

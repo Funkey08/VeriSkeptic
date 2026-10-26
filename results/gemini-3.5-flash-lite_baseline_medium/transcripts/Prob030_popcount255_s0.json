@@ -1,0 +1,20 @@
+{
+ "problem": "Prob030_popcount255",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (255 bits)\n - output out (  8 bits)\n\nA \"population count\" circuit counts the number of '1's in an input\nvector. The module should implement a population count circuit for a\n255-bit input vector.",
+ "final_design": "module TopModule (\n    input  logic [254:0] in,\n    output logic [7:0]   out\n);\n\n    always_comb begin\n        logic [7:0] count;\n        count = 8'd0;\n        for (int i = 0; i < 255; i++) begin\n            if (in[i]) begin\n                count = count + 1'b1;\n            end\n        end\n        out = count;\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (255 bits)\n - output out (  8 bits)\n\nA \"population count\" circuit counts the number of '1's in an input\nvector. The module should implement a population count circuit for a\n255-bit input vector.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```systemverilog\nmodule TopModule (\n    input  logic [254:0] in,\n    output logic [7:0]   out\n);\n\n    always_comb begin\n        logic [7:0] count;\n        count = 8'd0;\n        for (int i = 0; i < 255; i++) begin\n            if (in[i]) begin\n                count = count + 1'b1;\n            end\n        end\n        out = count;\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

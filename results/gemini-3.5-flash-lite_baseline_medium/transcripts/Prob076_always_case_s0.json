@@ -1,0 +1,20 @@
+{
+ "problem": "Prob076_always_case",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  sel   (3 bits)\n - input  data0 (4 bits)\n - input  data1 (4 bits)\n - input  data2 (4 bits)\n - input  data3 (4 bits)\n - input  data4 (4 bits)\n - input  data5 (4 bits)\n - output out   (4 bits)\n);\n\nThe module should implement a 6-to-1 multiplexer. When sel is between 0\nand 5, choose the corresponding data input. Otherwise, output 0. The data\ninputs and outputs are all 4 bits wide.",
+ "final_design": "module TopModule (\n    input  logic [2:0] sel,\n    input  logic [3:0] data0,\n    input  logic [3:0] data1,\n    input  logic [3:0] data2,\n    input  logic [3:0] data3,\n    input  logic [3:0] data4,\n    input  logic [3:0] data5,\n    output logic [3:0] out\n);\n\n    always_comb begin\n        case (sel)\n            3'd0:    out = data0;\n            3'd1:    out = data1;\n            3'd2:    out = data2;\n            3'd3:    out = data3;\n            3'd4:    out = data4;\n            3'd5:    out = data5;\n            default: out = 4'b0000;\n        endcase\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  sel   (3 bits)\n - input  data0 (4 bits)\n - input  data1 (4 bits)\n - input  data2 (4 bits)\n - input  data3 (4 bits)\n - input  data4 (4 bits)\n - input  data5 (4 bits)\n - output out   (4 bits)\n);\n\nThe module should implement a 6-to-1 multiplexer. When sel is between 0\nand 5, choose the corresponding data input. Otherwise, output 0. The data\ninputs and outputs are all 4 bits wide.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic [2:0] sel,\n    input  logic [3:0] data0,\n    input  logic [3:0] data1,\n    input  logic [3:0] data2,\n    input  logic [3:0] data3,\n    input  logic [3:0] data4,\n    input  logic [3:0] data5,\n    output logic [3:0] out\n);\n\n    always_comb begin\n        case (sel)\n            3'd0:    out = data0;\n            3'd1:    out = data1;\n            3'd2:    out = data2;\n            3'd3:    out = data3;\n            3'd4:    out = data4;\n            3'd5:    out = data5;\n            default: out = 4'b0000;\n        endcase\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "problem": "Prob063_review2015_shiftcount",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  shift_ena\n - input  count_ena\n - input  data\n - output q (4 bits)\n\nThe module should implement a four-bit shift register that also acts as a\ndown counter. Data is shifted in most-significant-bit first when\nshift_ena is 1. The number currently in the shift register is decremented\nwhen count_ena is 1. Since the full system doesn't ever use shift_ena and\ncount_ena together, it does not matter what your circuit does if both\ncontrol inputs are 1 (this mainly means that it doesn't matter which case\ngets higher priority). Assume all sequential logic is triggered on the\npositive edge of the clock.",
+ "final_design": "module TopModule (\n    input  logic       clk,\n    input  logic       shift_ena,\n    input  logic       count_ena,\n    input  logic       data,\n    output logic [3:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (shift_ena) begin\n            q <= {q[2:0], data};\n        end else if (count_ena) begin\n            q <= q - 4'd1;\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  shift_ena\n - input  count_ena\n - input  data\n - output q (4 bits)\n\nThe module should implement a four-bit shift register that also acts as a\ndown counter. Data is shifted in most-significant-bit first when\nshift_ena is 1. The number currently in the shift register is decremented\nwhen count_ena is 1. Since the full system doesn't ever use shift_ena and\ncount_ena together, it does not matter what your circuit does if both\ncontrol inputs are 1 (this mainly means that it doesn't matter which case\ngets higher priority). Assume all sequential logic is triggered on the\npositive edge of the clock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic       clk,\n    input  logic       shift_ena,\n    input  logic       count_ena,\n    input  logic       data,\n    output logic [3:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (shift_ena) begin\n            q <= {q[2:0], data};\n        end else if (count_ena) begin\n            q <= q - 4'd1;\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

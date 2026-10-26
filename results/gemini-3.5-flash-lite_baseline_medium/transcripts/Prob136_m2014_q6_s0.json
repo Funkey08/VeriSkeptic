@@ -1,0 +1,20 @@
+{
+ "problem": "Prob136_m2014_q6",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  w\n - output z\n\nThe module should implement the state machine shown below:\n\n  A (0) --0--> B\n  A (0) --1--> A\n  B (0) --0--> C\n  B (0) --1--> D\n  C (0) --0--> E\n  C (0) --1--> D\n  D (0) --0--> F\n  D (0) --1--> A\n  E (1) --0--> E\n  E (1) --1--> D\n  F (1) --0--> C\n  F (1) --1--> D\n\nAssume all sequential logic is triggered on the positive edge of the\nclock.",
+ "final_design": "module TopModule (\n    input  logic clk,\n    input  logic reset,\n    input  logic w,\n    output logic z\n);\n\n    typedef enum logic [2:0] {\n        A = 3'b000,\n        B = 3'b001,\n        C = 3'b010,\n        D = 3'b011,\n        E = 3'b100,\n        F = 3'b101\n    } state_t;\n\n    state_t current_state, next_state;\n\n    always_ff @(posedge clk or posedge reset) begin\n        if (reset) begin\n            current_state <= A;\n        end else begin\n            current_state <= next_state;\n        end\n    end\n\n    always_comb begin\n        next_state = current_state;\n        case (current_state)\n            A: next_state = w ? A : B;\n            B: next_state = w ? D : C;\n            C: next_state = w ? D : E;\n            D: next_state = w ? A : F;\n            E: next_state = w ? D : E;\n            F: next_state = w ? D : C;\n            default: next_state = A;\n        endcase\n    end\n\n    assign z = (current_state == E) || (current_state == F);\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - input  w\n - output z\n\nThe module should implement the state machine shown below:\n\n  A (0) --0--> B\n  A (0) --1--> A\n  B (0) --0--> C\n  B (0) --1--> D\n  C (0) --0--> E\n  C (0) --1--> D\n  D (0) --0--> F\n  D (0) --1--> A\n  E (1) --0--> E\n  E (1) --1--> D\n  F (1) --0--> C\n  F (1) --1--> D\n\nAssume all sequential logic is triggered on the positive edge of the\nclock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic clk,\n    input  logic reset,\n    input  logic w,\n    output logic z\n);\n\n    typedef enum logic [2:0] {\n        A = 3'b000,\n        B = 3'b001,\n        C = 3'b010,\n        D = 3'b011,\n        E = 3'b100,\n        F = 3'b101\n    } state_t;\n\n    state_t current_state, next_state;\n\n    always_ff @(posedge clk or posedge reset) begin\n        if (reset) begin\n            current_state <= A;\n        end else begin\n            current_state <= next_state;\n        end\n    end\n\n    always_comb begin\n        next_state = current_state;\n        case (current_state)\n            A: next_state = w ? A : B;\n            B: next_state = w ? D : C;\n            C: next_state = w ? D : E;\n            D: next_state = w ? A : F;\n            E: next_state = w ? D : E;\n            F: next_state = w ? D : C;\n            default: next_state = A;\n        endcase\n    end\n\n    assign z = (current_state == E) || (current_state == F);\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

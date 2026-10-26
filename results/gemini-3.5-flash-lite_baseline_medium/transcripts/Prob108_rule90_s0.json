@@ -1,0 +1,20 @@
+{
+ "problem": "Prob108_rule90",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk,\n - input  load,\n - input  data (512 bits)\n - output q    (512 bits)\n\nThe module should implement Rule 90, a one-dimensional cellular automaton\nwith interesting properties. The rules are simple. There is a\none-dimensional array of cells (on or off). At each time step, the next\nstate of each cell is the XOR of the cell's two current neighbours:\n\n  Left | Center | Right | Center's next state\n  1    | 1      | 1     | 0\n  1    | 1      | 0     | 1\n  1    | 0      | 1     | 0\n  1    | 0      | 0     | 1\n  0    | 1      | 1     | 1\n  0    | 1      | 0     | 0\n  0    | 0      | 1     | 1\n  0    | 0      | 0     | 0\n\nIn this circuit, create a 512-cell system (q[511:0]), and advance by one\ntime step each clock cycle. The load input indicates the state of the\nsystem should be loaded with data[511:0]. Assume the boundaries (q[-1]\nand q[512]) are both zero (off). Assume all sequential logic is triggered\non the positive edge of the clock.",
+ "final_design": "module TopModule (\n    input  logic         clk,\n    input  logic         load,\n    input  logic [511:0] data,\n    output logic [511:0] q\n);\n\nalways_ff @(posedge clk) begin\n    if (load) begin\n        q <= data;\n    end else begin\n        q <= {q[510:0], 1'b0} ^ {1'b0, q[511:1]};\n    end\nend\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk,\n - input  load,\n - input  data (512 bits)\n - output q    (512 bits)\n\nThe module should implement Rule 90, a one-dimensional cellular automaton\nwith interesting properties. The rules are simple. There is a\none-dimensional array of cells (on or off). At each time step, the next\nstate of each cell is the XOR of the cell's two current neighbours:\n\n  Left | Center | Right | Center's next state\n  1    | 1      | 1     | 0\n  1    | 1      | 0     | 1\n  1    | 0      | 1     | 0\n  1    | 0      | 0     | 1\n  0    | 1      | 1     | 1\n  0    | 1      | 0     | 0\n  0    | 0      | 1     | 1\n  0    | 0      | 0     | 0\n\nIn this circuit, create a 512-cell system (q[511:0]), and advance by one\ntime step each clock cycle. The load input indicates the state of the\nsystem should be loaded with data[511:0]. Assume the boundaries (q[-1]\nand q[512]) are both zero (off). Assume all sequential logic is triggered\non the positive edge of the clock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic         clk,\n    input  logic         load,\n    input  logic [511:0] data,\n    output logic [511:0] q\n);\n\nalways_ff @(posedge clk) begin\n    if (load) begin\n        q <= data;\n    end else begin\n        q <= {q[510:0], 1'b0} ^ {1'b0, q[511:1]};\n    end\nend\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "problem": "Prob112_always_case2",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (4 bits)\n - output pos (2 bits)\n\nThe module should implement a priority encoder. A priority encoder is a\ncombinational circuit that, when given an input bit vector, outputs the\nposition of the first 1 bit in the vector. For example, a 8-bit priority\nencoder given the input 8'b10010000 would output 3'd4, because bit[4] is\nfirst bit that is high. Build a 4-bit priority encoder. For this problem,\nif none of the input bits are high (i.e., input is zero), output zero.\nNote that a 4-bit number has 16 possible combinations.",
+ "final_design": "module TopModule (\n    input  logic [3:0] in,\n    output logic [1:0] pos\n);\n\nalways_comb begin\n    if      (in[0]) pos = 2'd0;\n    else if (in[1]) pos = 2'd1;\n    else if (in[2]) pos = 2'd2;\n    else if (in[3]) pos = 2'd3;\n    else            pos = 2'd0;\nend\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in  (4 bits)\n - output pos (2 bits)\n\nThe module should implement a priority encoder. A priority encoder is a\ncombinational circuit that, when given an input bit vector, outputs the\nposition of the first 1 bit in the vector. For example, a 8-bit priority\nencoder given the input 8'b10010000 would output 3'd4, because bit[4] is\nfirst bit that is high. Build a 4-bit priority encoder. For this problem,\nif none of the input bits are high (i.e., input is zero), output zero.\nNote that a 4-bit number has 16 possible combinations.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic [3:0] in,\n    output logic [1:0] pos\n);\n\nalways_comb begin\n    if      (in[0]) pos = 2'd0;\n    else if (in[1]) pos = 2'd1;\n    else if (in[2]) pos = 2'd2;\n    else if (in[3]) pos = 2'd3;\n    else            pos = 2'd0;\nend\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

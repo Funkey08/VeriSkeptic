@@ -1,0 +1,20 @@
+{
+ "problem": "Prob029_m2014_q4g",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in1\n - input  in2\n - input  in3\n - output out\n\nThe module should impement the following circuit: A two-input XNOR\n(connected to 'in1' and 'in2) has an output connected to the input of a\ntwo-input XOR. The second input of the XOR is 'in3.' The output of the\nXOR is 'out'.",
+ "final_design": "module TopModule (\n    input  logic in1,\n    input  logic in2,\n    input  logic in3,\n    output logic out\n);\n\n    assign out = (~(in1 ^ in2)) ^ in3;\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  in1\n - input  in2\n - input  in3\n - output out\n\nThe module should impement the following circuit: A two-input XNOR\n(connected to 'in1' and 'in2) has an output connected to the input of a\ntwo-input XOR. The second input of the XOR is 'in3.' The output of the\nXOR is 'out'.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```verilog\nmodule TopModule (\n    input  logic in1,\n    input  logic in2,\n    input  logic in3,\n    output logic out\n);\n\n    assign out = (~(in1 ^ in2)) ^ in3;\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}

@@ -4,8 +4,13 @@ An agent that turns a plain-English hardware spec into Verilog, then compiles it
 testbench, simulates and revises the code. It is evaluated on [VerilogEval v2](https://github.com/NVlabs/verilog-eval)
 (spec-to-RTL) against a single-call baseline.
 
-> **Headline:** _to be filled in from `results/summary.md` after the full run._
-> Format: "Self-verified agent: X% → Y% pass@1 on VerilogEval v2 without access to the reference tests (oracle upper bound Z%), at $N per design."
+> **Headline (gemini-3.5-flash-lite, all 152 problems):** the agent's self-written testbenches lifted
+> its own designs from **80.9% → 87.5%** pass@1 (10 fixed, 0 regressed, McNemar p = 0.002) with no
+> access to the reference tests, at **$0.013 per design**. FSM problems gained the most (56.7% → 70.0%
+> vs. single call). Against an independent single-call baseline (86.2%) the end-to-end gain is
+> **not significant** (+1.3 pts, 95% CI −3.9 to +6.6), and in **12.5%** of runs the agent signed off on a
+> design its own tests passed but the hidden tests failed. With the reference results fed back (oracle),
+> the same loop reaches **97.4%**: the gap is in test quality, not in the repair loop.
 
 ![pass rate vs attempts](results/pass_vs_attempts.png)
 
@@ -45,6 +50,26 @@ output reaches the model in mode C.
 
 ## Results
 
+gemini-3.5-flash-lite, medium thinking, 152 problems, one sample per mode. Total API cost of the
+whole study, including smoke tests, was about $3.70 (estimated from token counts at list prices).
+
+| Mode | pass@1 | 95% CI | Δ vs. single call (paired) | LLM calls / problem | $ / problem |
+|---|---|---|---|---|---|
+| A. Single call | 86.2% | 80.9–91.4 | — | 1.0 | $0.004 |
+| C. Self-verified (own testbench) | 87.5% | 82.2–92.1 | +1.3 (−3.9 to +6.6) | 5.8 | $0.013 |
+| D. Oracle feedback (upper bound) | 97.4% | 94.7–99.3 | +11.2 (+5.9 to +17.1) | 2.2 | $0.007 |
+
+What the numbers say:
+- **The repair loop works; the tests are the bottleneck.** Given the hidden testbench's verdict, the
+  agent fixes 17 designs and breaks none. With only its own testbench it fixes 10 and breaks none, but
+  every one of its 19 remaining failures had passed its own tests.
+- **The tool-using agent's first draft is weaker than a plain single call** (80.9% vs. 86.2%), which
+  absorbs most of the loop's gain. Prompting for the first draft is the obvious next lever.
+- **FSMs benefit most** from self-verification (56.7% → 70.0%); combinational problems are already
+  near ceiling for single calls (96.3%).
+- Mode B (compile feedback only) was run on the 20-problem smoke set but not the full benchmark,
+  to stay within budget.
+
 See [`results/summary.md`](results/summary.md) for the full tables: pass rates, cost, self-verification
 reliability, results by category (combinational / sequential / FSM), failure breakdown, and problems
 fixed by iteration. Full agent transcripts are in `results/<run>/transcripts/`.
@@ -56,8 +81,12 @@ make setup                # icarus-verilog, VerilogEval v2 clone, Python deps (u
 cp .env.example .env      # add your GEMINI_API_KEY
 make test                 # harness: all 152 reference solutions must pass
 make smoke                # 20 problems x 4 modes on a cheap model
-make eval                 # full run on gemini-4-argon, then analysis
+make eval-budget          # reproduces the results above (baseline/self/oracle on flash-lite, ~$3)
+make eval                 # all four modes on gemini-4-argon, then analysis
 ```
+
+On a cloud-synced folder (OneDrive, Dropbox), set `VAGENT_WORK_DIR=~/vagent-work` so results and the
+cache are written outside it; sync can otherwise block writes mid-run.
 
 LLM responses are cached in `.cache/llm/`, so re-running replays them at no cost. Individual runs:
 `uv run run_eval.py --mode self --model gemini-4-argon --limit 20`. Runs resume if interrupted.

@@ -1,0 +1,20 @@
+{
+ "problem": "Prob086_lfsr5",
+ "spec": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - output q (5 bits)\n\nA linear feedback shift register is a shift register usually with a few\nXOR gates to produce the next state of the shift register. A Galois LFSR\nis one particular arrangement that shifts right, where a bit position with\na \"tap\" is XORed with the LSB output bit (q[0]) to produce its next value,\nwhile bit positions without a tap shift right unchanged.  If the taps positions\nare carefully chosen, the LFSR can be made to be \"maximum-length\". A maximum-length\nLFSR of n bits cycles through 2**n-1 states before repeating (the all-zero state is\nnever reached).\n\nThe module should implement a 5-bit maximal-length Galois LFSR with taps\nat bit positions 5 and 3. The active-high synchronous reset should reset\nthe LFSR output to 1. Assume all sequential logic is triggered on the\npositive edge of the clock.",
+ "final_design": "module TopModule (\n    input  logic       clk,\n    input  logic       reset,\n    output logic [4:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            q <= 5'd1;\n        end else begin\n            // Shift right Galois LFSR with taps at positions 5 and 3 \n            // (corresponding to bit indices 4 and 2 in 0-indexed 5-bit vector)\n            q <= {1'b0, q[4:1]} ^ (q[0] ? 5'b10100 : 5'b0);\n        end\n    end\n\nendmodule\n",
+ "messages": [
+  {
+   "role": "user",
+   "content": "I would like you to implement a module named TopModule with the following\ninterface. All input and output ports are one bit unless otherwise\nspecified.\n\n - input  clk\n - input  reset\n - output q (5 bits)\n\nA linear feedback shift register is a shift register usually with a few\nXOR gates to produce the next state of the shift register. A Galois LFSR\nis one particular arrangement that shifts right, where a bit position with\na \"tap\" is XORed with the LSB output bit (q[0]) to produce its next value,\nwhile bit positions without a tap shift right unchanged.  If the taps positions\nare carefully chosen, the LFSR can be made to be \"maximum-length\". A maximum-length\nLFSR of n bits cycles through 2**n-1 states before repeating (the all-zero state is\nnever reached).\n\nThe module should implement a 5-bit maximal-length Galois LFSR with taps\nat bit positions 5 and 3. The active-high synchronous reset should reset\nthe LFSR output to 1. Assume all sequential logic is triggered on the\npositive edge of the clock.\n\nWrite the complete SystemVerilog implementation of TopModule.\nRespond with a single ```verilog code block containing the full module and nothing else."
+  },
+  {
+   "role": "assistant",
+   "content": [
+    {
+     "type": "text",
+     "text": "```systemverilog\nmodule TopModule (\n    input  logic       clk,\n    input  logic       reset,\n    output logic [4:0] q\n);\n\n    always_ff @(posedge clk) begin\n        if (reset) begin\n            q <= 5'd1;\n        end else begin\n            // Shift right Galois LFSR with taps at positions 5 and 3 \n            // (corresponding to bit indices 4 and 2 in 0-indexed 5-bit vector)\n            q <= {1'b0, q[4:1]} ^ (q[0] ? 5'b10100 : 5'b0);\n        end\n    end\n\nendmodule\n```"
+    }
+   ]
+  }
+ ]
+}
