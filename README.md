@@ -1,8 +1,7 @@
-# Self-verifying LLM agent for RTL design
+# A self-verifying LLM agent for RTL design
 
-An agent that turns a plain-English hardware spec into Verilog, then compiles it, writes its own
-testbench, simulates and revises the code, all without seeing the benchmark's reference tests. That is
-the setting a real design flow is in: nobody hands the engineer an answer key. It is evaluated on all
+VeriSkeptic is an agent that turns a plain-English hardware spec into Verilog, compiles it, writes its own
+testbench, and simulates and revises the code—all without seeing the benchmark's reference tests. This simulates the workflow of a real-life engineer, who doesn't necessarily have an answer key to work off of. The Verily hardware spec is evaluated on all
 152 problems of [VerilogEval v2](https://github.com/NVlabs/verilog-eval) (spec-to-RTL), with scoring that
 reproduces the official harness.
 
@@ -16,12 +15,12 @@ reproduces the official harness.
 | False confidence | **12.5%** of runs | own tests passed, hidden tests failed |
 | Cost | **$0.013** per design | 5.8 LLM calls on average |
 
-**Things to note.** Against an independent single-call baseline (86.2%) the end-to-end gain is not
-significant (+1.3 pts, 95% CI −3.9 to +6.6), because the tool-using agent's first draft is weaker than a
-plain call. The 10-point gap to the oracle comes from the agent's tests, not its repair loop: all 19 of its
+**Things to note:** Against an independent single-call baseline (86.2%) the end-to-end gain isn't
+significant (+1.3 pts, 95% CI −3.9 to +6.6). The reason for this is that the tool-using agent's first draft is weaker than a
+plain call. The 10-point gap to the oracle comes from the agent's tests, not its repair loop. All 19 of its
 remaining failures passed its own testbench.
 
-**Next steps.** Make the agent's tests stronger, for example with a separate test-writer that never
+**Ways this can be improved:** Make the agent's tests stronger. For example, with a separate test-writer that never
 sees the design or with randomized checks against a reference model the agent writes itself, and close the
 first-draft gap. Then repeat with multiple samples and a stronger model for tighter intervals.
 
@@ -31,7 +30,7 @@ first-draft gap. Then repeat with multiple samples and a stronger model for tigh
 
 Iterative LLM agents for Verilog are well studied (AutoChip, RTLFixer, VerilogCoder, MAGE). Many
 reported gains come from feeding the benchmark's own test results back to the model, which tunes the
-design against the answer key. This project measures **how much of that gain survives when the agent
+design against the answer key. But an answer key isn't available to an engineer in the real world. This project measures **how much of that gain survives when the agent
 can only use feedback it could actually get in practice**, and how far it can trust its own tests.
 
 ## Experimental conditions
