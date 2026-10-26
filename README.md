@@ -1,16 +1,29 @@
 # Self-verifying LLM agent for RTL design
 
 An agent that turns a plain-English hardware spec into Verilog, then compiles it, writes its own
-testbench, simulates and revises the code. It is evaluated on [VerilogEval v2](https://github.com/NVlabs/verilog-eval)
-(spec-to-RTL) against a single-call baseline.
+testbench, simulates and revises the code, all without seeing the benchmark's reference tests. That is
+the setting a real design flow is in: nobody hands the engineer an answer key. It is evaluated on all
+152 problems of [VerilogEval v2](https://github.com/NVlabs/verilog-eval) (spec-to-RTL), with scoring that
+reproduces the official harness.
 
-> **Headline (gemini-3.5-flash-lite, all 152 problems):** the agent's self-written testbenches lifted
-> its own designs from **80.9% → 87.5%** pass@1 (10 fixed, 0 regressed, McNemar p = 0.002) with no
-> access to the reference tests, at **$0.013 per design**. FSM problems gained the most (56.7% → 70.0%
-> vs. single call). Against an independent single-call baseline (86.2%) the end-to-end gain is
-> **not significant** (+1.3 pts, 95% CI −3.9 to +6.6), and in **12.5%** of runs the agent signed off on a
-> design its own tests passed but the hidden tests failed. With the reference results fed back (oracle),
-> the same loop reaches **97.4%**: the gap is in test quality, not in the repair loop.
+**Key results** (gemini-3.5-flash-lite, one sample per mode, about $3.70 for the whole study):
+
+| | pass@1 | |
+|---|---|---|
+| Self-verification loop (first design → submitted) | **80.9% → 87.5%** | 10 fixed, 0 regressed, McNemar p = 0.002 |
+| FSM problems, single call → self-verified | **56.7% → 70.0%** | largest gain of any category (n = 30) |
+| Oracle feedback (hidden tests shown to the agent) | **97.4%** | upper bound for the same loop |
+| False confidence | **12.5%** of runs | own tests passed, hidden tests failed |
+| Cost | **$0.013** per design | 5.8 LLM calls on average |
+
+**Things to note.** Against an independent single-call baseline (86.2%) the end-to-end gain is not
+significant (+1.3 pts, 95% CI −3.9 to +6.6), because the tool-using agent's first draft is weaker than a
+plain call. The 10-point gap to the oracle comes from the agent's tests, not its repair loop: all 19 of its
+remaining failures passed its own testbench.
+
+**Next steps.** Make the agent's tests stronger, for example with a separate test-writer that never
+sees the design or with randomized checks against a reference model the agent writes itself, and close the
+first-draft gap. Then repeat with multiple samples and a stronger model for tighter intervals.
 
 ![pass rate vs attempts](results/pass_vs_attempts.png)
 
