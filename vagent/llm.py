@@ -21,11 +21,11 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from .dataset import ROOT
+from .dataset import ROOT, WORK_DIR
 
 load_dotenv(ROOT / ".env")
 
-CACHE_DIR = ROOT / ".cache" / "llm"
+CACHE_DIR = WORK_DIR / ".cache" / "llm"
 
 # USD per million tokens: (input, output incl. thinking, cache read).
 # Gemini prices are the promotional rates in effect October 2026 (gemini-4-argon

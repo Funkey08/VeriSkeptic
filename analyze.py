@@ -18,9 +18,9 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-from vagent.dataset import ROOT, load_problems  # noqa: E402
+from vagent.dataset import WORK_DIR, load_problems  # noqa: E402
 
-RESULTS_DIR = ROOT / "results"
+RESULTS_DIR = WORK_DIR / "results"
 MODE_ORDER = ["baseline", "compile", "self", "oracle"]
 MODE_LABEL = {
     "baseline": "A. Single call",
@@ -233,7 +233,7 @@ def main() -> None:
     (RESULTS_DIR / "summary.md").write_text(md)
     plot(runs, RESULTS_DIR / "pass_vs_attempts.png")
     print(md)
-    print("Wrote results/summary.md and results/pass_vs_attempts.png")
+    print(f"Wrote {RESULTS_DIR}/summary.md and pass_vs_attempts.png")
 
 
 if __name__ == "__main__":

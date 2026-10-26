@@ -16,6 +16,9 @@ uv run pytest tests/test_agent.py -q                                # single tes
 uv run run_eval.py --mode self --problems Prob003 --run-name dbg    # one problem
 ```
 
+The repo sits in OneDrive, whose sync can block writes mid-run. For paid runs set
+`VAGENT_WORK_DIR=~/vagent-work` so `results/` and `.cache/` live outside it, then copy final runs back.
+
 API keys live in `.env` (`GEMINI_API_KEY`, optional `ANTHROPIC_API_KEY`). Full evals spend real money;
 ask before running anything beyond `make test` or a small smoke run.
 

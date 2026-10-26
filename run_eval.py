@@ -16,10 +16,10 @@ from pathlib import Path
 from tqdm import tqdm
 
 from vagent.agent import MODES, run
-from vagent.dataset import ROOT, load_problems
+from vagent.dataset import WORK_DIR, load_problems
 from vagent.llm import Usage, make_llm
 
-RESULTS_DIR = ROOT / "results"
+RESULTS_DIR = WORK_DIR / "results"
 
 
 def _strip_signatures(messages: list[dict]) -> list[dict]:
@@ -113,7 +113,7 @@ def main() -> None:
                 args.max_cost = None
 
     print(f"Done. This session: {passed} passed, {total.calls} calls ({total.cached_calls} cached), "
-          f"${total.cost_usd:.2f}. Results: {results_path.relative_to(ROOT)}")
+          f"${total.cost_usd:.2f}. Results: {results_path}")
 
 
 if __name__ == "__main__":

@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+import os
 import re
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+# Results and the LLM cache can live elsewhere, e.g. outside a cloud-synced folder.
+WORK_DIR = Path(os.environ.get("VAGENT_WORK_DIR") or ROOT).expanduser()
 DATA_DIR = ROOT / "data" / "verilog-eval" / "dataset_spec-to-rtl"
 
 # Problems whose own reference solution fails the official pass criteria, so no
