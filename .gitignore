@@ -8,3 +8,9 @@ data/
 __pycache__/
 .venv/
 .pytest_cache/
+# Smoke/debug runs (only final runs are committed)
+results/smoke_*/
+results/dbg*/
+# Editor / OS
+.DS_Store
+.vscode/
