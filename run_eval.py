@@ -75,6 +75,7 @@ def main() -> None:
     def work(problem, sample):
         out = run(problem, llm, args.mode, sample, max_attempts=args.max_attempts)
         transcript = run_dir / "transcripts" / f"{problem.id}_s{sample}.json"
+        transcript.parent.mkdir(parents=True, exist_ok=True)  # cloud-sync folders can vanish mid-run
         transcript.write_text(json.dumps({
             "problem": problem.id, "spec": problem.spec, "final_design": out.final_design,
             "messages": _strip_signatures(out.messages),

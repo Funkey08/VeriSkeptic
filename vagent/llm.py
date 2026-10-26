@@ -139,7 +139,8 @@ class GeminiLLM(LLM):
                 # Generous retries: a full benchmark run will hit rate limits.
                 retry = types.HttpRetryOptions(attempts=8, initial_delay=2.0, max_delay=60.0,
                                                http_status_codes=[429, 500, 502, 503, 504])
-                self._client = genai.Client(http_options=types.HttpOptions(retry_options=retry))
+                # No default timeout: a dropped response would otherwise hang a worker forever.
+                self._client = genai.Client(http_options=types.HttpOptions(retry_options=retry, timeout=600_000))
             return self._client
 
     @staticmethod
