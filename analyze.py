@@ -43,6 +43,8 @@ def pass_at_k(n: int, c: int, k: int) -> float:
 def load_runs(model: str | None) -> list[dict]:
     runs = []
     for path in sorted(RESULTS_DIR.glob("*/results.jsonl")):
+        if path.parent.name.startswith(("smoke_", "dbg")):  # pipeline checks, not results
+            continue
         recs = [json.loads(l) for l in path.read_text().splitlines() if l.strip()]
         if not recs or (model and recs[0]["model"] != model):
             continue
@@ -95,6 +97,14 @@ def ci(values: list[float]) -> str:
     return f"{100 * lo:.1f}–{100 * hi:.1f}"
 
 
+def mcnemar_p(b: int, c: int) -> float:
+    """Exact two-sided McNemar test on discordant pairs (b vs c)."""
+    n = b + c
+    if n == 0:
+        return 1.0
+    return min(1.0, 2 * sum(comb(n, i) for i in range(min(b, c) + 1)) / 2**n)
+
+
 def summarize(runs: list[dict]) -> str:
     n_full = len(load_problems())
     out = ["# Results", ""]
@@ -129,6 +139,22 @@ def summarize(runs: list[dict]) -> str:
             f"| {run['name']} | {base['name']} | {len(common)} | {100 * sum(diffs) / len(diffs):+.1f} | "
             f"{100 * lo:+.1f} to {100 * hi:+.1f} | {sum(d > 0 for d in diffs)} / {sum(d < 0 for d in diffs)} |"
         )
+
+    # Same run, first design vs. submitted design: isolates what the feedback loop adds.
+    out += ["", "## Gain from iteration (first design vs. submitted, same run)", "",
+            "| Run | First design | Submitted | Δ (pp) | Fixed / regressed | McNemar p |",
+            "|---|---|---|---|---|---|"]
+    for run in runs:
+        recs = run["recs"]
+        if run["mode"] == "baseline":
+            continue
+        first = [bool(r["versions"]) and r["versions"][0]["passed"] for r in recs]
+        final = [r["passed"] for r in recs]
+        fixed = sum(f and not a for a, f in zip(first, final))
+        broke = sum(a and not f for a, f in zip(first, final))
+        p1, p2 = sum(first) / len(recs), sum(final) / len(recs)
+        out.append(f"| {run['name']} | {pct(p1)} | {pct(p2)} | {100 * (p2 - p1):+.1f} | {fixed} / {broke} | "
+                   f"{mcnemar_p(fixed, broke):.3g} |")
 
     self_runs = [r for r in runs if r["mode"] == "self"]
     if self_runs:
@@ -198,6 +224,13 @@ def plot(runs: list[dict], path: Path, max_k: int = 5) -> None:
             label = MODE_LABEL[mode]
             style = {}
         if not pts:
+            continue
+        if len(pts) == 1:  # a single baseline sample: show pass@1 as a reference line
+            y = 100 * pts[0][1]
+            ax.axhline(y, color=MODE_COLOR[mode], linewidth=1.5, linestyle=(0, (4, 3)),
+                       label=f"{MODE_LABEL[mode]} (pass@1, one sample)")
+            ax.annotate(f"{y:.1f}%", (max_k, y), xytext=(8, 0), textcoords="offset points",
+                        va="center", fontsize=9, color=INK, bbox=dict(fc=SURFACE, ec="none", pad=1))
             continue
         xs, ys = zip(*pts)
         ys = [100 * y for y in ys]
